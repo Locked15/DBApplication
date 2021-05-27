@@ -1,0 +1,87 @@
+﻿<Window x:Class="DBApplication.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DBApplication"
+        mc:Ignorable="d"
+        Title="База Данных" Height="450" Width="800" SizeToContent="Manual"
+        MinHeight="400" MinWidth="800"
+        Background="LightGray">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45*"/>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="220*"/>
+            <RowDefinition Height="30*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="630*"/>
+        </Grid.ColumnDefinitions>
+
+        <Button Name="ExitAccountButton" Grid.Row="0" Grid.Column="0" Click="ExitAccountButton_Click">
+            <Grid Name="ExitGrid">
+                <Image Name="ExitAccountButton_Image" Source="Resources/Exit - 01.png" Height="40" Width="40" Margin="0, 0, 75, 0"/>
+
+                <TextBlock Name="ExitAccountButton_TextBlock" Text="Выход." VerticalAlignment="Center" HorizontalAlignment="Right"
+                Margin="20, 0, 0, 0" FontSize="18"/>
+            </Grid>
+        </Button>
+
+        <Button Name="AddCommodityButton" Grid.Row="1" Grid.Column="0" Click="AddCommodityButton_Click">
+            <Grid Name="AddGrid">
+                <Image Name="AddCommodityButton_Image" Source="Resources/Add-New.png" Height="30" Width="30" Margin="0, 0, 85, 0"/>
+
+                <TextBlock Name="AddCommodityButton_TextBlock" Text="Добавить." VerticalAlignment="Center" HorizontalAlignment="Right"
+                Margin="20, 0, 0, 0" FontSize="16"/>
+            </Grid>
+        </Button>
+
+        <Button Name="ChangeCommodityButton" Grid.Row="2" Grid.Column="0" Click="ChangeCommodityButton_Click">
+            <Grid Name="ChangeGrid">
+                <Image Name="ChangeCommodityButton_Image" Source="Resources/Change.png" Width="30" Height="30" Margin="0, 0, 85, 0"/>
+
+                <TextBlock Name="ChangeCommodityButton_TextBlock" Text="Изменить." VerticalAlignment="Center" HorizontalAlignment="Right"
+                Margin="20, 0, 0, 0" FontSize="16"/>
+            </Grid>
+        </Button>
+
+        <Button Name="DeleteCommodityButton" Grid.Row="3" Grid.Column="0" Click="DeleteCommodityButton_Click">
+            <Grid Name="DeleteGrid">
+                <Image Name="DeleteCommodityButton_Image" Source="Resources/Delete.png" Width="30" Height="30" Margin="0, 0, 85, 0"/>
+
+                <TextBlock Name="DeleteCommodityButton_TextBlock" Text="Удалить." VerticalAlignment="Center" HorizontalAlignment="Right"
+                Margin="20, 0, 0, 0" FontSize="16"/>
+            </Grid>
+        </Button>
+
+        <Button Name="UpdateSheetButton" Grid.Row="4" Grid.Column="0" Click="UpdateSheetButton_Click">
+            <Grid Name="UpdateGrid">
+                <Image Name="UpdateSheetButton_Image" Source="Resources/Reload.png" Width="30" Height="30" Margin="0, 0, 85, 0"/>
+
+                <TextBlock Name="UpdateSheetButton_TextBlock" Text="Обновить." VerticalAlignment="Center" HorizontalAlignment="Right"
+                Margin="20, 0, 0, 0" FontSize="16"/>
+            </Grid>
+        </Button>
+
+        <Button Name="InfoAboutProgramButton" Grid.Row="6" Grid.Column="0" Click="InfoAboutProgramButton_Click">
+            <Grid Name="InfoButtonGrid">
+                <Image Name="InfoAboutProgramButton_Image" Source="Resources/Help.png" Width="25" Height="25" Margin="0, 0, 90, 0"/>
+
+                <TextBlock Name="InfoAboutProgramButton_TextBlock" Text="Сведения." VerticalAlignment="Center" HorizontalAlignment="Right"
+                Margin="20, 0, 0, 0" FontSize="18"/>
+            </Grid>
+        </Button>
+
+        <Grid Name="DarkGray_Border" Grid.Row="0" Grid.Column="1" Grid.RowSpan="7" Background="DarkGray"/>
+
+        <ListView Name="Sheet" Grid.Column="2" Grid.RowSpan="7"/>
+    </Grid>
+</Window>
