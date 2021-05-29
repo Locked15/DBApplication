@@ -1,0 +1,293 @@
+﻿<Window x:Class = "DBApplication.Registration"
+        xmlns = "http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x = "http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d = "http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc = "http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local = "clr-namespace:DBApplication"
+        mc:Ignorable = "d" Title = "Регистрация"
+        MinHeight = "300" MinWidth = "350"
+        Height = "300" Width = "350">
+
+    <Window.Resources>
+        <Style x:Key = "FocusVisual">
+            <Setter Property = "Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin = "2" SnapsToDevicePixels = "true" Stroke = "{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" 
+                        StrokeThickness = "1" StrokeDashArray = "1 2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <SolidColorBrush x:Key = "Button.Static.Background" Color = "#FFDDDDDD"/>
+        <SolidColorBrush x:Key = "Button.Static.Border" Color = "#FF707070"/>
+        <SolidColorBrush x:Key = "Button.MouseOver.Background" Color = "#FFBEE6FD"/>
+        <SolidColorBrush x:Key = "Button.MouseOver.Border" Color = "#FF3C7FB1"/>
+        <SolidColorBrush x:Key = "Button.Pressed.Background" Color = "#FFC4E5F6"/>
+        <SolidColorBrush x:Key = "Button.Pressed.Border" Color = "#FF2C628B"/>
+        <SolidColorBrush x:Key = "Button.Disabled.Background" Color = "#FFF4F4F4"/>
+        <SolidColorBrush x:Key = "Button.Disabled.Border" Color = "#FFADB2B5"/>
+        <SolidColorBrush x:Key = "Button.Disabled.Foreground" Color = "#FF838383"/>
+
+        <Style x:Key = "UserPasswordButtonStyle" TargetType = "{x:Type Button}">
+            <Setter Property = "FocusVisualStyle" Value = "{StaticResource FocusVisual}"/>
+            <Setter Property = "Background" Value = "{StaticResource Button.Static.Background}"/>
+            <Setter Property = "BorderBrush" Value = "{StaticResource Button.Static.Border}"/>
+            <Setter Property = "Foreground" Value = "{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property = "BorderThickness" Value = "1"/>
+            <Setter Property = "HorizontalContentAlignment" Value = "Center"/>
+            <Setter Property = "VerticalContentAlignment" Value = "Center"/>
+            <Setter Property = "Padding" Value = "1"/>
+            <Setter Property = "Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType = "{x:Type Button}">
+                        <Border x:Name = "border" BorderBrush = "{TemplateBinding BorderBrush}" BorderThickness = "{TemplateBinding BorderThickness}" 
+                        Background = "{TemplateBinding Background}" SnapsToDevicePixels = "true" CornerRadius = "9">
+
+                            <ContentPresenter x:Name = "contentPresenter" Focusable = "False" HorizontalAlignment = "{TemplateBinding HorizontalContentAlignment}" 
+                            Margin = "{TemplateBinding Padding}" RecognizesAccessKey = "True" SnapsToDevicePixels = "{TemplateBinding SnapsToDevicePixels}" 
+                            VerticalAlignment = "{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property = "IsDefaulted" Value = "true">
+                                <Setter Property = "BorderBrush" TargetName = "border" Value = "{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+
+                            <Trigger Property = "IsMouseOver" Value = "true">
+                                <Setter Property = "Background" TargetName = "border" Value = "{StaticResource Button.MouseOver.Background}"/>
+
+                                <Setter Property = "BorderBrush" TargetName = "border" Value = "{StaticResource Button.MouseOver.Border}"/>
+                            </Trigger>
+
+                            <Trigger Property = "IsPressed" Value = "true">
+                                <Setter Property = "Background" TargetName = "border" Value = "{StaticResource Button.Pressed.Background}"/>
+
+                                <Setter Property = "BorderBrush" TargetName = "border" Value = "{StaticResource Button.Pressed.Border}"/>
+                            </Trigger>
+
+                            <Trigger Property = "IsEnabled" Value = "false">
+                                <Setter Property = "Background" TargetName = "border" Value = "{StaticResource Button.Disabled.Background}"/>
+
+                                <Setter Property = "BorderBrush" TargetName = "border" Value = "{StaticResource Button.Disabled.Border}"/>
+
+                                <Setter Property = "TextElement.Foreground" TargetName = "contentPresenter" 
+                                Value = "{StaticResource Button.Disabled.Foreground}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Name = "MainGrid" Background = "LightGray">
+        <Grid.RowDefinitions>
+            <RowDefinition Height = "25*"/>
+            <RowDefinition Height = "25*"/>
+            <RowDefinition Height = "25*"/>
+            <RowDefinition Height = "25*"/>
+            <RowDefinition Height = "125*"/>
+            <RowDefinition Height = "30*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width = "20*"/>
+            <ColumnDefinition Width = "40*"/>
+        </Grid.ColumnDefinitions>
+
+        <Button Name = "UserNameBlockButton" Grid.Row = "0" Grid.Column = "0" Click = "UserNameBlockButton_Click">
+            <Grid Name = "UserName_Grid">
+                <Image Name = "UserNameBlockButton_Image" Source = "Resources/Customer.png" Width = "25" Height = "25" Margin = "0, 0, 85, 0"/>
+
+                <TextBlock Name = "UserNameBlockButton_TextBlock" Text = "Логин." VerticalAlignment = "Center" HorizontalAlignment = "Right"
+                Margin = "0, 0, 10, 0" FontSize = "16"/>
+            </Grid>
+        </Button>
+
+        <Button Name = "UserPasswordBlockButton" Grid.Row = "1" Grid.Column = "0" Click = "UserNameGrid_GoToPasswordBlockButton_Click">
+            <Grid Name = "UserPassword_Grid">
+                <Image Name = "UserPasswordBlockButton_Image" Source = "Resources/Key.png" Width = "25" Height = "25" Margin = "0, 0, 85, 0"/>
+
+                <TextBlock Name = "UserPasswordBlockButton_TextBlock" Text = "Пароль." VerticalAlignment = "Center" HorizontalAlignment = "Right"
+                Margin = "0, 0, 5, 0" FontSize = "16"/>
+            </Grid>
+        </Button>
+
+        <Button Name = "UserGenderBlockButton" Grid.Row = "2" Grid.Column = "0" Click = "UserPasswordGrid_GoToGenderBlockButton_Click">
+            <Grid Name = "UserGender_Grid">
+                <Image Name = "UserGenderBlockButton_Image" Source = "Resources/Astro-Cancer.png" Width = "25" Height = "25" Margin = "0, 0, 85, 0"/>
+
+                <TextBlock Name = "UserGenderBlockButton_TextBlock" Text = "Пол." VerticalAlignment = "Center" HorizontalAlignment = "Right"
+                Margin = "0, 0, 20, 0" FontSize = "16"/>
+            </Grid>
+        </Button>
+
+        <Button Name = "UserBirthBlockButton" Grid.Row = "3" Grid.Column = "0" Click = "UserGenderGrid_GoToBirthBlockButton_Click">
+            <Grid Name = "UserBirth_Grid">
+                <Image Name = "UserBirthBlockButton_Image" Source = "Resources/Calendar -01 .png" Width = "25" Height = "25" Margin = "0, 0, 85, 0"/>
+
+                <TextBlock Name = "UserBirthBlockButton_TextBlock" Text = "Возраст." VerticalAlignment = "Center" HorizontalAlignment = "Right"
+                Margin = "0, 0, 10, 0" FontSize = "16"/>
+            </Grid>
+        </Button>
+
+        <Button Name = "UserIsReadyButton" Grid.Row = "5" Grid.Column = "0" Click = "UserIsReadyButton_Click">
+            <Grid Name = "UserReady_Grid">
+                <Image Name = "UserIsReadyBlockButton_Image" Source = "Resources/Check.png" Width = "25" Height = "25" Margin = "0, 0, 85, 0"/>
+
+                <TextBlock Name = "UserIsReadyBlockButton_TextBlock" Text = "Готово." VerticalAlignment = "Center" HorizontalAlignment = "Right"
+                Margin = "0, 0, 10, 0" FontSize = "16"/>
+            </Grid>
+        </Button>
+
+        <Grid Name = "UserNameGrid" Grid.Row = "0" Grid.Column = "1" Grid.RowSpan = "6" Background = "White" Visibility = "Visible">
+            <Grid.RowDefinitions>
+                <RowDefinition Height = "10*"/>
+                <RowDefinition Height = "30*"/>
+                <RowDefinition Height = "125*"/>
+                <RowDefinition Height = "30*"/>
+                <RowDefinition Height = "35*"/>
+                <RowDefinition Height = "35*"/>
+                <RowDefinition Height = "5*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width = "20*"/>
+                <ColumnDefinition Width = "200*"/>
+                <ColumnDefinition Width = "20*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Name = "UserNameGrid_UserNameDes" Text = "Введите будущее Имя Пользователя (Логин)." Grid.Row = "1" Grid.Column = "1" 
+            TextWrapping = "Wrap" TextAlignment = "Center" VerticalAlignment = "Center" FontFamily = "Georgia"/>
+
+            <TextBox Name = "UserNameGrid_UserNameBox" Grid.Row = "3" Grid.Column = "1" HorizontalContentAlignment = "Center"
+            VerticalContentAlignment = "Center" FontFamily = "Georgia" Visibility = "Hidden"/>
+
+            <TextBox Name = "UserNameGrid_UserNameHiddenBox" Grid.Row = "3" Grid.Column = "1" HorizontalContentAlignment = "Center"
+            VerticalContentAlignment = "Center" FontFamily = "Georgia" GotFocus = "UserNameGrid_UserNameHiddenBox_GotFocus"
+            LostFocus = "UserNameGrid_UserNameHiddenBox_LostFocus" Text = "(Ввод...)" Visibility = "Visible"/>
+
+            <Button Name = "UserNameGrid_GoToPasswordBlockButton" Grid.Row = "5" Grid.Column = "1" HorizontalContentAlignment = "Center"
+            VerticalContentAlignment = "Center" Click = "UserNameGrid_GoToPasswordBlockButton_Click" FontFamily = "Georgia"
+            Content = "Перейти к созданию пароля." Background = "Transparent" BorderThickness = "0"
+            GotFocus = "ElementGotFocus" LostFocus = "ElementLostFocus"/>
+        </Grid>
+
+        <Grid Name = "UserPasswordGrid" Grid.Row = "0" Grid.Column = "1" Grid.RowSpan = "6" Background = "White" Visibility = "Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height = "10*"/>
+                <RowDefinition Height = "30*"/>
+                <RowDefinition Height = "10*"/>
+                <RowDefinition Height = "25*"/>
+                <RowDefinition Height = "50*"/>
+                <RowDefinition Height = "25*"/>
+                <RowDefinition Height = "30*"/>
+                <RowDefinition Height = "35*"/>
+                <RowDefinition Height = "35*"/>
+                <RowDefinition Height = "5*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width = "20*"/>
+                <ColumnDefinition Width = "160*"/>
+                <ColumnDefinition Width = "5*"/>
+                <ColumnDefinition Width = "25*"/>
+                <ColumnDefinition Width = "20*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Name = "UserPasswordGrid_UserPasswordDes" Text = "Введите будущий Пароль Пользователя." Grid.Row = "1" Grid.Column = "1" 
+            TextWrapping = "Wrap" TextAlignment = "Center" VerticalAlignment = "Center" FontFamily = "Georgia" Margin = "0,1" Grid.ColumnSpan = "3"/>
+
+            <PasswordBox Name = "UserPasswordGrid_UserPasswordHiddenBox" Grid.Row = "3" Grid.Column = "1" HorizontalContentAlignment = "Center"
+            VerticalContentAlignment = "Center" FontFamily = "Georgia" Visibility = "Visible"/>
+
+            <TextBox Name = "UserPasswordGrid_UserPasswordBox" Grid.Row = "3" Grid.Column = "1" HorizontalContentAlignment = "Center"
+            VerticalContentAlignment = "Center" FontFamily = "Georgia" Visibility = "Hidden"/>
+
+            <Button Name = "UserPasswordGrid_ShowUserPassword" Grid.Row = "3" Grid.Column = "3" Style = "{DynamicResource UserPasswordButtonStyle}"
+            Click = "UserPasswordGrid_ShowUserPassword_Click">
+                <Image Name = "ShowUserPassword_Image" Source = "Resources/ShowPassword.png"/>
+            </Button>
+
+            <TextBlock Name = "UserPasswordGrid_UserAcceptPasswordDes" Text = "Подтвердите пароль:" Grid.Row = "5" Grid.Column = "1"
+            Grid.ColumnSpan = "3" TextAlignment = "Center" VerticalAlignment = "Center" FontFamily = "Georgia"/>
+
+            <PasswordBox Name = "UserPasswordGrid_UserAcceptPasswordHiddenBox" Grid.Row = "6" Grid.Column = "1" Grid.ColumnSpan = "3" 
+            HorizontalContentAlignment = "Center" VerticalContentAlignment = "Center" FontFamily = "Georgia" Visibility = "Visible"/>
+
+            <TextBox Name = "UserPasswordGrid_UserAcceptPasswordBox" Grid.Row = "6" Grid.Column = "1" Grid.ColumnSpan = "3" Visibility = "Hidden"
+            HorizontalContentAlignment = "Center" VerticalContentAlignment = "Center" FontFamily = "Georgia"/>
+
+            <Button Name = "UserPasswordGrid_GoToGenderBlockButton" Grid.Row = "8" Grid.Column = "1" HorizontalContentAlignment = "Center"
+            VerticalContentAlignment = "Center" Click="UserPasswordGrid_GoToGenderBlockButton_Click" FontFamily = "Georgia"
+            Content = "Перейти к указанию пола." Background = "Transparent" BorderThickness = "0"
+            GotFocus = "ElementGotFocus" LostFocus = "ElementLostFocus" Grid.ColumnSpan = "3"/>
+        </Grid>
+
+        <Grid Name = "UserGenderGrid" Grid.Row = "0" Grid.Column = "1" Grid.RowSpan = "6" Background = "White" Visibility = "Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height = "10*"/>
+                <RowDefinition Height = "30*"/>
+                <RowDefinition Height = "125*"/>
+                <RowDefinition Height = "30*"/>
+                <RowDefinition Height = "35*"/>
+                <RowDefinition Height = "35*"/>
+                <RowDefinition Height = "5*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width = "20*"/>
+                <ColumnDefinition Width = "200*"/>
+                <ColumnDefinition Width = "20*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Name = "UserGenderGrid_UserGenderDes" Text = "Введите пол Пользователя." Grid.Row = "1" Grid.Column = "1" 
+            TextWrapping = "Wrap" TextAlignment = "Center" VerticalAlignment = "Center" FontFamily = "Georgia"/>
+
+            <ComboBox Name = "UserGenderGrid_UserGenderSelect" Grid.Row = "3" Grid.Column = "1" HorizontalContentAlignment = "Center"
+            VerticalContentAlignment = "Center" FontFamily = "Georgia">
+                <ComboBoxItem Name = "UserGenderGrid_UserGenderSelect_MaleGender" Content = "Мужской;" FontFamily = "Georgia"/>
+
+                <ComboBoxItem Name = "UserGenderGrid_UserGenderSelect_FemaleGender" Content = "Женский;" FontFamily = "Georgia"/>
+
+                <ComboBoxItem Name = "UserGenderGrid_UserGenderSelect_AlternativeGender" Content = "Альтернативный." FontFamily = "Georgia"/>
+            </ComboBox>
+
+            <Button Name = "UserGenderGrid_GoToBirthBlockButton" Grid.Row = "5" Grid.Column = "1" HorizontalContentAlignment = "Center"
+            VerticalContentAlignment = "Center" Click = "UserGenderGrid_GoToBirthBlockButton_Click" FontFamily = "Georgia"
+            Content = "Перейти к Дате Рождения." Background = "Transparent" BorderThickness = "0"
+            GotFocus = "ElementGotFocus" LostFocus = "ElementLostFocus"/>
+        </Grid>
+
+        <Grid Name = "UserBirthGrid" Grid.Row = "0" Grid.Column = "1" Grid.RowSpan = "6" Background = "White" Visibility = "Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height = "10*"/>
+                <RowDefinition Height = "30*"/>
+                <RowDefinition Height = "125*"/>
+                <RowDefinition Height = "30*"/>
+                <RowDefinition Height = "35*"/>
+                <RowDefinition Height = "35*"/>
+                <RowDefinition Height = "5*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width = "20*"/>
+                <ColumnDefinition Width = "200*"/>
+                <ColumnDefinition Width = "20*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Name = "UserBirthGrid_UserBirthDes" Text = "Укажите дату рождения Пользователя." Grid.Row = "1" Grid.Column = "1" 
+            TextWrapping = "Wrap" TextAlignment = "Center" VerticalAlignment = "Center" FontFamily = "Georgia"/>
+
+            <DatePicker Name = "UserBirthGrid_UserBirthSelect" Grid.Row = "3" Grid.Column = "1" HorizontalContentAlignment = "Center"
+            VerticalContentAlignment = "Center" FontFamily = "Georgia" DisplayDateEnd = "2021-05-29"/>
+
+            <Button Name = "UserBirthGrid_UserIsReady" Grid.Row = "5" Grid.Column = "1" HorizontalContentAlignment = "Center"
+            VerticalContentAlignment = "Center" Click = "UserIsReadyButton_Click" FontFamily = "Georgia"
+            Content = "Создать пользователя." Background = "Transparent" BorderThickness = "0"
+            GotFocus = "ElementGotFocus" LostFocus = "ElementLostFocus"/>
+        </Grid>
+    </Grid>
+</Window>

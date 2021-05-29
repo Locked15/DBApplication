@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Data;
 using System.Windows;
 using System.Data.SqlClient;
 using System.Windows.Controls;
+using System.Collections.Generic;
 using Bool = System.Boolean;
 
 /// <summary>
@@ -41,7 +43,7 @@ namespace DBApplication
         static SqlCommandBuilder sqlCommands;
 
         /// <summary>
-        /// Статический конструктор класса. Инициализирует поле подключения к Базе Данных.
+        /// Статический конструктор класса. Инициализирует поле подключения к Базе Данных и обновляет список активных пользователей.
         /// </summary>
         static DataBaseWork()
         {

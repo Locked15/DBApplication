@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text.Json;
 using System.Collections.Generic;
 using Bool = System.Boolean;
 
@@ -27,6 +26,13 @@ namespace DBApplication
         /// </summary>
         public DateTime BirthDate { get; private set; }
 
+        /// <summary>
+        /// Конструктор класса.
+        /// </summary>
+        /// <param name="name">Имя пользователя.</param>
+        /// <param name="password">Пароль пользователя.</param>
+        /// <param name="userGender">Пол пользователя.</param>
+        /// <param name="birthDate">Дата рождения пользователя.</param>
         public User(String name, String password, Gender userGender, DateTime birthDate)
         {
             Name = name;
@@ -151,53 +157,6 @@ namespace DBApplication
             }
 
             CommodityQuantity = newQuantity;
-        }
-    }
-
-    /// <summary>
-    /// Класс, содержащий данные о том, какие товары принадлежат данному Пользователю.
-    /// </summary>
-    public class UserProperties : User
-    {
-        /// <summary>
-        /// Свойство, содержащее товары, принадлежащие данному пользователю.
-        /// </summary>
-        public List<Commodity> UserCommodities { get; private set; }
-
-        /// <summary>
-        /// Конструктор класса.
-        /// </summary>
-        /// <param name="name">Имя пользователя.</param>
-        /// <param name="password">Пароль пользователя.</param>
-        /// <param name="userGender">Пол пользователя.</param>
-        /// <param name="birthDate">Дата рождения пользователя.</param>
-        /// <param name="userCommodities">Список товаров, принадлежащих пользователю.</param>
-        public UserProperties(String name, String password, Gender userGender, DateTime birthDate, List<Commodity> userCommodities)
-        : base(name, password, userGender, birthDate)
-        {
-            UserCommodities = userCommodities;
-        }
-
-        /// <summary>
-        /// Метод для добавления товара какому-либо пользователю.
-        /// </summary>
-        /// <param name="commodityToAdd">Товар, который следует добавить к пользователю.</param>>
-        public void AddCommodity(Commodity commodityToAdd)
-        {
-            //Заглушка для добавления товара в БАЗУ ДАННЫХ.
-
-            UserCommodities.Add(commodityToAdd);
-        }
-
-        /// <summary>
-        /// Метод для удаления какого-либо товара у пользователя.
-        /// </summary>
-        /// <param name="commodityToDelete">Товар, который необходимо удалить.</param>
-        public void DeleteCommodity(Commodity commodityToDelete)
-        {
-            //Заглушка для удаления товара из БАЗЫ ДАННЫХ.
-
-            UserCommodities.Remove(commodityToDelete);
         }
     }
 

@@ -14,18 +14,18 @@ namespace DBApplication
     public partial class MainWindow : Window
     {
         /// <summary>
-        /// Поле, содержащее текущего пользователя и список его товаров.
+        /// Поле, содержащее текущего пользователя.
         /// </summary>
-        UserProperties currentUser;
+        User currentUser;
 
         /// <summary>
         /// Конструктор класса.
         /// </summary>
-        public MainWindow()
+        public MainWindow(User user)
         {
             InitializeComponent();
 
-
+            currentUser = user;
         }
 
         /// <summary>
