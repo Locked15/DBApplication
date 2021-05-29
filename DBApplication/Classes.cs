@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Bool = System.Boolean;
 
 namespace DBApplication
@@ -25,6 +24,11 @@ namespace DBApplication
         /// Свойство, содержащее дату рождения пользователя.
         /// </summary>
         public DateTime BirthDate { get; private set; }
+
+        /// <summary>
+        /// Статическое поле, содержащее все возможные значения пола Пользователя.
+        /// </summary>
+        public static readonly Gender[] Genders = { Gender.Male, Gender.Female, Gender.Alternative};
 
         /// <summary>
         /// Конструктор класса.

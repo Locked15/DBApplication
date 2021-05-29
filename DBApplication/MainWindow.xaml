@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="База Данных" Height="450" Width="800" SizeToContent="Manual"
         MinHeight="400" MinWidth="800"
-        Background="LightGray">
+        Background="LightGray"
+        Icon = "Resources/Database-Connection.ico">
 
     <Grid>
         <Grid.RowDefinitions>

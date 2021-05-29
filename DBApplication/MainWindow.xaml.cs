@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
-using System.Configuration;
-using System.Data.SqlClient;
+using System.Collections.Generic;
 
 /// <summary>
 /// Область с Главным Окном.
@@ -28,15 +27,8 @@ namespace DBApplication
             currentUser = user;
         }
 
-        /// <summary>
-        /// Событие, возникающее при нажатии на кнопку "ExitAccountButton". Совершает выход из текущего аккаунта.
-        /// </summary>
-        /// <param name="sender">Объект, вызвавший событие.</param>
-        /// <param name="e">Аргументы события.</param>
-        private void ExitAccountButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        #region Работа с Таблицей.
+        //—————————————————————————————————————————————————————————————————————————————————————————
 
         /// <summary>
         /// Событие, возникающее при нажатии на кнопку "AddCommodityButton". Добавляет новый товар в список и Базу Данных.
@@ -78,6 +70,25 @@ namespace DBApplication
 
         }
 
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
+
+        #region Прочие события.
+        //—————————————————————————————————————————————————————————————————————————————————————————
+
+        /// <summary>
+        /// Событие, возникающее при нажатии на кнопку "ExitAccountButton". Совершает выход из текущего аккаунта.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавший событие.</param>
+        /// <param name="e">Аргументы события.</param>
+        private void ExitAccountButton_Click(object sender, RoutedEventArgs e)
+        {
+            GetStartedWindow newWindow = new GetStartedWindow();
+
+            newWindow.Show();
+            Close();
+        }
+
         /// <summary>
         /// Событие, возникающее при нажатии на кнопку "InfoAboutProgramButton". Выводит информацию о программе.
         /// </summary>
@@ -87,5 +98,8 @@ namespace DBApplication
         {
 
         }
+
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
     }
 }

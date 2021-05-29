@@ -14,7 +14,7 @@ namespace DBApplication
         /// Поле, содержащее Строку Подключения.
         /// </summary>
         public static String ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;
-        AttachDbFilename=""D:\19П-5\DataBase App\DBApplication\БД\DataBase.mdf"";
-        Integrated Security=True";
+        AttachDbFilename=C:\Users\Земфира\source\repos\DBApplication\DBApplication\БД\DataBase.mdf;
+        Integrated Security = True";
     }
 }

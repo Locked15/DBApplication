@@ -6,7 +6,8 @@
         xmlns:local = "clr-namespace:DBApplication"
         mc:Ignorable = "d" Title = "Приветствие" 
         Height = "350" Width = "300"
-        ResizeMode = "CanMinimize">
+        ResizeMode = "CanMinimize"
+        Icon = "Resources/Door-Closed.ico">
     
     <Window.Resources>
         <Style x:Key = "FocusVisual">

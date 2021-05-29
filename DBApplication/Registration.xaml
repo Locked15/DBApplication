@@ -6,7 +6,9 @@
         xmlns:local = "clr-namespace:DBApplication"
         mc:Ignorable = "d" Title = "Регистрация"
         MinHeight = "300" MinWidth = "350"
-        Height = "300" Width = "350">
+        Height = "300" Width = "350"
+        Loaded="Window_Loaded"
+        Icon = "Resources/User-Add.ico">
 
     <Window.Resources>
         <Style x:Key = "FocusVisual">
@@ -80,6 +82,57 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key = "GoToNextBlockStyle" TargetType = "{x:Type Button}">
+            <Setter Property = "FocusVisualStyle" Value = "{StaticResource FocusVisual}"/>
+            <Setter Property = "Background" Value = "{StaticResource Button.Static.Background}"/>
+            <Setter Property = "BorderBrush" Value = "{StaticResource Button.Static.Border}"/>
+            <Setter Property = "Foreground" Value = "{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property = "BorderThickness" Value = "1"/>
+            <Setter Property = "HorizontalContentAlignment" Value = "Center"/>
+            <Setter Property = "VerticalContentAlignment" Value = "Center"/>
+            <Setter Property = "Padding" Value = "1"/>
+            <Setter Property = "Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType = "{x:Type Button}">
+                        <Border x:Name = "border" BorderBrush = "{TemplateBinding BorderBrush}" BorderThickness = "{TemplateBinding BorderThickness}" 
+                        Background = "{TemplateBinding Background}" SnapsToDevicePixels = "true" CornerRadius = "8">
+
+                            <ContentPresenter x:Name = "contentPresenter" Focusable = "False" HorizontalAlignment = "{TemplateBinding HorizontalContentAlignment}" 
+                            Margin = "{TemplateBinding Padding}" RecognizesAccessKey = "True" SnapsToDevicePixels = "{TemplateBinding SnapsToDevicePixels}" 
+                            VerticalAlignment = "{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property = "IsDefaulted" Value = "true">
+                                <Setter Property = "BorderBrush" TargetName = "border" Value = "{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+
+                            <Trigger Property = "IsMouseOver" Value = "true">
+                                <Setter Property = "Background" TargetName = "border" Value = "Transparent"/>
+
+                                <Setter Property = "BorderBrush" TargetName = "border" Value = "Gray"/>
+                            </Trigger>
+
+                            <Trigger Property = "IsPressed" Value = "true">
+                                <Setter Property = "Background" TargetName = "border" Value = "LightGray"/>
+
+                                <Setter Property = "BorderBrush" TargetName = "border" Value = "Gray"/>
+                            </Trigger>
+
+                            <Trigger Property = "IsEnabled" Value = "false">
+                                <Setter Property = "Background" TargetName = "border" Value = "{StaticResource Button.Disabled.Background}"/>
+
+                                <Setter Property = "BorderBrush" TargetName = "border" Value = "{StaticResource Button.Disabled.Border}"/>
+
+                                <Setter Property = "TextElement.Foreground" TargetName = "contentPresenter" 
+                                Value = "{StaticResource Button.Disabled.Foreground}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
     <Grid Name = "MainGrid" Background = "LightGray">
@@ -97,7 +150,8 @@
             <ColumnDefinition Width = "40*"/>
         </Grid.ColumnDefinitions>
 
-        <Button Name = "UserNameBlockButton" Grid.Row = "0" Grid.Column = "0" Click = "UserNameBlockButton_Click">
+        <Button Name = "UserNameBlockButton" Grid.Row = "0" Grid.Column = "0" Click = "UserNameBlockButton_Click"
+        GotFocus="ButtonGotFocus">
             <Grid Name = "UserName_Grid">
                 <Image Name = "UserNameBlockButton_Image" Source = "Resources/Customer.png" Width = "25" Height = "25" Margin = "0, 0, 85, 0"/>
 
@@ -106,7 +160,8 @@
             </Grid>
         </Button>
 
-        <Button Name = "UserPasswordBlockButton" Grid.Row = "1" Grid.Column = "0" Click = "UserNameGrid_GoToPasswordBlockButton_Click">
+        <Button Name = "UserPasswordBlockButton" Grid.Row = "1" Grid.Column = "0" Click = "UserNameGrid_GoToPasswordBlockButton_Click"
+        GotFocus="ButtonGotFocus">
             <Grid Name = "UserPassword_Grid">
                 <Image Name = "UserPasswordBlockButton_Image" Source = "Resources/Key.png" Width = "25" Height = "25" Margin = "0, 0, 85, 0"/>
 
@@ -115,7 +170,8 @@
             </Grid>
         </Button>
 
-        <Button Name = "UserGenderBlockButton" Grid.Row = "2" Grid.Column = "0" Click = "UserPasswordGrid_GoToGenderBlockButton_Click">
+        <Button Name = "UserGenderBlockButton" Grid.Row = "2" Grid.Column = "0" Click = "UserPasswordGrid_GoToGenderBlockButton_Click"
+        GotFocus="ButtonGotFocus">
             <Grid Name = "UserGender_Grid">
                 <Image Name = "UserGenderBlockButton_Image" Source = "Resources/Astro-Cancer.png" Width = "25" Height = "25" Margin = "0, 0, 85, 0"/>
 
@@ -124,7 +180,8 @@
             </Grid>
         </Button>
 
-        <Button Name = "UserBirthBlockButton" Grid.Row = "3" Grid.Column = "0" Click = "UserGenderGrid_GoToBirthBlockButton_Click">
+        <Button Name = "UserBirthBlockButton" Grid.Row = "3" Grid.Column = "0" Click = "UserGenderGrid_GoToBirthBlockButton_Click"
+        GotFocus="ButtonGotFocus">
             <Grid Name = "UserBirth_Grid">
                 <Image Name = "UserBirthBlockButton_Image" Source = "Resources/Calendar -01 .png" Width = "25" Height = "25" Margin = "0, 0, 85, 0"/>
 
@@ -163,16 +220,18 @@
             TextWrapping = "Wrap" TextAlignment = "Center" VerticalAlignment = "Center" FontFamily = "Georgia"/>
 
             <TextBox Name = "UserNameGrid_UserNameBox" Grid.Row = "3" Grid.Column = "1" HorizontalContentAlignment = "Center"
-            VerticalContentAlignment = "Center" FontFamily = "Georgia" Visibility = "Hidden"/>
+            VerticalContentAlignment = "Center" FontFamily = "Georgia" KeyUp = "EnterKeyUse"
+            Visibility = "Hidden" MouseLeave = "UserNameGrid_UserNameBox_MouseLeave"/>
 
             <TextBox Name = "UserNameGrid_UserNameHiddenBox" Grid.Row = "3" Grid.Column = "1" HorizontalContentAlignment = "Center"
-            VerticalContentAlignment = "Center" FontFamily = "Georgia" GotFocus = "UserNameGrid_UserNameHiddenBox_GotFocus"
-            LostFocus = "UserNameGrid_UserNameHiddenBox_LostFocus" Text = "(Ввод...)" Visibility = "Visible"/>
+            VerticalContentAlignment = "Center" FontFamily = "Georgia" MouseEnter = "UserNameGrid_UserNameHiddenBox_MouseEnter"
+            Text = "(Ввод...)" Visibility = "Visible"/>
 
             <Button Name = "UserNameGrid_GoToPasswordBlockButton" Grid.Row = "5" Grid.Column = "1" HorizontalContentAlignment = "Center"
             VerticalContentAlignment = "Center" Click = "UserNameGrid_GoToPasswordBlockButton_Click" FontFamily = "Georgia"
             Content = "Перейти к созданию пароля." Background = "Transparent" BorderThickness = "0"
-            GotFocus = "ElementGotFocus" LostFocus = "ElementLostFocus"/>
+            MouseEnter = "ElementGotMouse" MouseLeave = "ElementLostMouse"
+            Style = "{DynamicResource GoToNextBlockStyle}"/>
         </Grid>
 
         <Grid Name = "UserPasswordGrid" Grid.Row = "0" Grid.Column = "1" Grid.RowSpan = "6" Background = "White" Visibility = "Hidden">
@@ -201,10 +260,10 @@
             TextWrapping = "Wrap" TextAlignment = "Center" VerticalAlignment = "Center" FontFamily = "Georgia" Margin = "0,1" Grid.ColumnSpan = "3"/>
 
             <PasswordBox Name = "UserPasswordGrid_UserPasswordHiddenBox" Grid.Row = "3" Grid.Column = "1" HorizontalContentAlignment = "Center"
-            VerticalContentAlignment = "Center" FontFamily = "Georgia" Visibility = "Visible"/>
+            VerticalContentAlignment = "Center" FontFamily = "Georgia" Visibility = "Visible" KeyUp = "EnterKeyUse"/>
 
             <TextBox Name = "UserPasswordGrid_UserPasswordBox" Grid.Row = "3" Grid.Column = "1" HorizontalContentAlignment = "Center"
-            VerticalContentAlignment = "Center" FontFamily = "Georgia" Visibility = "Hidden"/>
+            VerticalContentAlignment = "Center" FontFamily = "Georgia" Visibility = "Hidden" KeyUp = "EnterKeyUse"/>
 
             <Button Name = "UserPasswordGrid_ShowUserPassword" Grid.Row = "3" Grid.Column = "3" Style = "{DynamicResource UserPasswordButtonStyle}"
             Click = "UserPasswordGrid_ShowUserPassword_Click">
@@ -215,15 +274,18 @@
             Grid.ColumnSpan = "3" TextAlignment = "Center" VerticalAlignment = "Center" FontFamily = "Georgia"/>
 
             <PasswordBox Name = "UserPasswordGrid_UserAcceptPasswordHiddenBox" Grid.Row = "6" Grid.Column = "1" Grid.ColumnSpan = "3" 
-            HorizontalContentAlignment = "Center" VerticalContentAlignment = "Center" FontFamily = "Georgia" Visibility = "Visible"/>
+            HorizontalContentAlignment = "Center" VerticalContentAlignment = "Center" FontFamily = "Georgia" Visibility = "Visible"
+            KeyUp = "EnterKeyUse"/>
 
             <TextBox Name = "UserPasswordGrid_UserAcceptPasswordBox" Grid.Row = "6" Grid.Column = "1" Grid.ColumnSpan = "3" Visibility = "Hidden"
-            HorizontalContentAlignment = "Center" VerticalContentAlignment = "Center" FontFamily = "Georgia"/>
+            HorizontalContentAlignment = "Center" VerticalContentAlignment = "Center" FontFamily = "Georgia" 
+            KeyUp = "EnterKeyUse"/>
 
             <Button Name = "UserPasswordGrid_GoToGenderBlockButton" Grid.Row = "8" Grid.Column = "1" HorizontalContentAlignment = "Center"
             VerticalContentAlignment = "Center" Click="UserPasswordGrid_GoToGenderBlockButton_Click" FontFamily = "Georgia"
             Content = "Перейти к указанию пола." Background = "Transparent" BorderThickness = "0"
-            GotFocus = "ElementGotFocus" LostFocus = "ElementLostFocus" Grid.ColumnSpan = "3"/>
+            MouseEnter = "ElementGotMouse" MouseLeave = "ElementLostMouse" Grid.ColumnSpan = "3"
+            Style = "{DynamicResource GoToNextBlockStyle}"/>
         </Grid>
 
         <Grid Name = "UserGenderGrid" Grid.Row = "0" Grid.Column = "1" Grid.RowSpan = "6" Background = "White" Visibility = "Hidden">
@@ -258,7 +320,8 @@
             <Button Name = "UserGenderGrid_GoToBirthBlockButton" Grid.Row = "5" Grid.Column = "1" HorizontalContentAlignment = "Center"
             VerticalContentAlignment = "Center" Click = "UserGenderGrid_GoToBirthBlockButton_Click" FontFamily = "Georgia"
             Content = "Перейти к Дате Рождения." Background = "Transparent" BorderThickness = "0"
-            GotFocus = "ElementGotFocus" LostFocus = "ElementLostFocus"/>
+            MouseEnter = "ElementGotMouse" MouseLeave = "ElementLostMouse"
+            Style = "{DynamicResource GoToNextBlockStyle}"/>
         </Grid>
 
         <Grid Name = "UserBirthGrid" Grid.Row = "0" Grid.Column = "1" Grid.RowSpan = "6" Background = "White" Visibility = "Hidden">
@@ -287,7 +350,8 @@
             <Button Name = "UserBirthGrid_UserIsReady" Grid.Row = "5" Grid.Column = "1" HorizontalContentAlignment = "Center"
             VerticalContentAlignment = "Center" Click = "UserIsReadyButton_Click" FontFamily = "Georgia"
             Content = "Создать пользователя." Background = "Transparent" BorderThickness = "0"
-            GotFocus = "ElementGotFocus" LostFocus = "ElementLostFocus"/>
+            MouseEnter = "ElementGotMouse" MouseLeave = "ElementLostMouse"
+            Style = "{DynamicResource GoToNextBlockStyle}"/>
         </Grid>
     </Grid>
 </Window>

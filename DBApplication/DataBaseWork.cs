@@ -56,33 +56,42 @@ namespace DBApplication
         /// Метод для внесения пользователя в Базу Данных.
         /// </summary>
         /// <param name="user">Пользователь, которого нужно добавить.</param>
-        public static void WriteNewUserInTable(User user)
+        /// <returns>Логическое значение, отвечающее за успех добавления пользователя в Базу Данных.</returns>
+        public static Bool WriteNewUserInTable(User user)
         {
             if (initialized)
             {
                 if (CheckUserExistance(user.Name))
                 {
                     MessageBox.Show("Пользователь с таким именем уже существует в системе.", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                    connectToDB.Close();
+
+                    return false;
                 }
 
                 else
                 {
-                    SqlCommand commandToInsert = new SqlCommand("INSERT INTO UserTable(name, password, gender, birthDate) " +
+                    SqlCommand commandToInsert = new SqlCommand("INSERT INTO UserTable(UserName, UserPassword, Gender, BirthDate) " +
                     "VALUES(@uName, @uPass, @uGender, @uBirth)", connectToDB);
                     commandToInsert.Parameters.AddWithValue("@uName", user.Name);
                     commandToInsert.Parameters.AddWithValue("@uPass", user.Password);
                     commandToInsert.Parameters.AddWithValue("@uGender", user.UserGender.GetStringFromGender());
-                    commandToInsert.Parameters.AddWithValue("@uPass", user.Password);
+                    commandToInsert.Parameters.AddWithValue("@uBirth", user.BirthDate);
 
                     commandToInsert.ExecuteNonQuery();
 
                     connectToDB.Close();
+
+                    return true;
                 }
             }
 
             else
             {
                 MessageBox.Show("Обнаружена попытка обращения к Базе Данных до инициализации.", "Внимание!", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                return false;
             }
         }
 
@@ -129,14 +138,16 @@ namespace DBApplication
         /// Метод для добавления Товара (экземпляр "Commodity") в Базу Данных.
         /// </summary>
         /// <param name="commodityToAdd">Товар, который нужно добавить в Базу Данных.</param>
-        public static void WriteCommodityTable(Commodity commodityToAdd)
+        /// <param name="ownerName">Имя пользователя, которому принадлежит товар.</param>>
+        public static void WriteCommodityTable(Commodity commodityToAdd, String ownerName)
         {
-            dataSetter = new SqlDataAdapter("INSERT INTO CommodityTable(name, weight, price, quantity) " +
-            "VALUES(@comName, @comWeight, @comPrice, @comQuantity)", connectToDB);
+            dataSetter = new SqlDataAdapter("INSERT INTO CommodityTable(CommodityName, CommodityWeight, CommodityPrice, CommodityQuantity, Owner) " +
+            "VALUES(@comName, @comWeight, @comPrice, @comQuantity, @comOwner)", connectToDB);
             dataSetter.SelectCommand.Parameters.AddWithValue("@comName", commodityToAdd.CommodityName);
             dataSetter.SelectCommand.Parameters.AddWithValue("@comWeight", commodityToAdd.CommodityWeight);
             dataSetter.SelectCommand.Parameters.AddWithValue("@comPrice", commodityToAdd.CommodityPrice);
             dataSetter.SelectCommand.Parameters.AddWithValue("@comQuantity", commodityToAdd.CommodityQuantity);
+            dataSetter.SelectCommand.Parameters.AddWithValue("@comOwner", ownerName);
 
             sqlCommands = new SqlCommandBuilder(dataSetter);
             sqlCommands.GetUpdateCommand();
@@ -199,7 +210,11 @@ namespace DBApplication
                     connectToDB.Close();
                 }
 
-                return reader.HasRows;
+                Bool hasRows = reader.HasRows;
+
+                reader.Close();
+
+                return hasRows;
             }
 
             else
