@@ -8,7 +8,8 @@
         Title="База Данных" Height="450" Width="800" SizeToContent="Manual"
         MinHeight="400" MinWidth="800"
         Background="LightGray"
-        Icon = "Resources/Database-Connection.ico">
+        Loaded="Window_Loaded"
+        Icon="Resources/Database-Connection.ico">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -83,6 +84,31 @@
 
         <Grid Name="DarkGray_Border" Grid.Row="0" Grid.Column="1" Grid.RowSpan="7" Background="DarkGray"/>
 
-        <ListView Name="Sheet" Grid.Column="2" Grid.RowSpan="7"/>
+        <ListView Name="Sheet" Grid.Column="2" Grid.RowSpan="7">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn x:Name="idColumn" DisplayMemberBinding="{Binding Path=ID}"
+                    Header="ID:" Width="30" />
+
+                    <GridViewColumn x:Name="commodityNameColumn" DisplayMemberBinding="{Binding Path=Commodity.CommodityName}"
+                    Header="Имя товара:" Width="170"/>
+
+                    <GridViewColumn x:Name="commodityWeightColumn" DisplayMemberBinding="{Binding Path=Commodity.CommodityWeight}"
+                    Header="Вес товара:" Width="120"/>
+
+                    <GridViewColumn x:Name="commodityPriceColumn" DisplayMemberBinding="{Binding Path=Commodity.CommodityPrice}"
+                    Header="Цена товара:" Width="170"/>
+
+                    <GridViewColumn x:Name="commodityQuantityColumn" DisplayMemberBinding="{Binding Path=Commodity.CommodityQuantity}"
+                    Header="Количество товара:" Width="170"/>
+                </GridView>
+            </ListView.View>
+
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
     </Grid>
 </Window>

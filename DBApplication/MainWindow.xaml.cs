@@ -12,19 +12,29 @@ namespace DBApplication
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Поля класса.
+        //—————————————————————————————————————————————————————————————————————————————————————————
+
         /// <summary>
         /// Поле, содержащее текущего пользователя.
         /// </summary>
         User currentUser;
 
         /// <summary>
+        /// Список, содержащий все имущество текущего владельца. Нужен для работы привязки данных.
+        /// </summary>
+        List<UserProperty> currentUserProperties = new List<UserProperty>(1);
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
+
+        /// <summary>
         /// Конструктор класса.
         /// </summary>
         public MainWindow(User user)
         {
-            InitializeComponent();
-
             currentUser = user;
+
+            InitializeComponent();
         }
 
         #region Работа с Таблицей.
@@ -97,6 +107,19 @@ namespace DBApplication
         private void InfoAboutProgramButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        /// <summary>
+        /// Событие, возникающее при загрузке окна. 
+        /// Нужно для подгрузки данных в таблицу из Базы Данных.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавший событие.</param>
+        /// <param name="e">Аргументы события.</param>
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            currentUserProperties = DataBaseWork.ReadCommoditiesTable(currentUser.Name);
+
+            Sheet.ItemsSource = currentUserProperties;
         }
 
         //—————————————————————————————————————————————————————————————————————————————————————————

@@ -8,27 +8,45 @@ namespace DBApplication
     /// </summary>
     public class User
     {
+        #region Поля класса.
+        //—————————————————————————————————————————————————————————————————————————————————————————
+
+        /// <summary>
+        /// Статическое поле, содержащее все возможные значения пола Пользователя.
+        /// </summary>
+        public static readonly Gender[] Genders = { Gender.Male, Gender.Female, Gender.Alternative };
+
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
+
+        #region Свойства класса.
+        //—————————————————————————————————————————————————————————————————————————————————————————
+
         /// <summary>
         /// Свойство, содержащее имя пользователя.
         /// </summary>
         public String Name { get; private set; }
+
         /// <summary>
         /// Свойство, содержащее пароль пользователя.
         /// </summary>
         public String Password { get; private set; }
+
         /// <summary>
         /// Свойство, содержащее пол пользователя.
         /// </summary>
         public Gender UserGender { get; private set; }
+
         /// <summary>
         /// Свойство, содержащее дату рождения пользователя.
         /// </summary>
         public DateTime BirthDate { get; private set; }
 
-        /// <summary>
-        /// Статическое поле, содержащее все возможные значения пола Пользователя.
-        /// </summary>
-        public static readonly Gender[] Genders = { Gender.Male, Gender.Female, Gender.Alternative};
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
+
+        #region Методы класса.
+        //—————————————————————————————————————————————————————————————————————————————————————————
 
         /// <summary>
         /// Конструктор класса.
@@ -44,6 +62,9 @@ namespace DBApplication
             UserGender = userGender;
             BirthDate = birthDate;
         }
+
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
     }
 
     /// <summary>
@@ -51,22 +72,34 @@ namespace DBApplication
     /// </summary>
     public struct Commodity
     {
+        #region Поля класса.
+        //—————————————————————————————————————————————————————————————————————————————————————————
+
         /// <summary>
         /// Поле, содержащее имя товара.
         /// </summary>
         readonly String commodityName;
+
         /// <summary>
         /// Поле, содержащее вес товара.
         /// </summary>
-        readonly Double commodityWeight;
+        readonly Decimal commodityWeight;
+
         /// <summary>
         /// Поле, содержащее цену товара.
         /// </summary>
         Decimal commodityPrice;
+
         /// <summary>
         /// Поле, содержащее количество товара.
         /// </summary>
         Int32 commodityQuantity;
+
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
+
+        #region Свойства класса.
+        //—————————————————————————————————————————————————————————————————————————————————————————
 
         /// <summary>
         /// Свойство, содержащее имя товара.
@@ -78,16 +111,18 @@ namespace DBApplication
                 return commodityName;
             }
         }
+
         /// <summary>
         /// Свойство, содержащее вес товара.
         /// </summary>
-        public Double CommodityWeight
+        public Decimal CommodityWeight
         {
             get
             {
                 return commodityWeight;
             }
         }
+
         /// <summary>
         /// Свойство, содержащее цену товара.
         /// </summary>
@@ -103,6 +138,7 @@ namespace DBApplication
                 commodityPrice = value;
             }
         }
+
         /// <summary>
         /// Свойство, содержащее количество товара.
         /// </summary>
@@ -119,6 +155,12 @@ namespace DBApplication
             }
         }
 
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
+
+        #region Методы класса.
+        //—————————————————————————————————————————————————————————————————————————————————————————
+
         /// <summary>
         /// Конструктор класса.
         /// </summary>
@@ -126,7 +168,7 @@ namespace DBApplication
         /// <param name="commodityWeight">Вес товара.</param>
         /// <param name="commodityPrice">Цена товара.</param>
         /// <param name="commodityQuantity">Количество товара.</param>
-        public Commodity(String commodityName, Double commodityWeight, Decimal commodityPrice, Int32 commodityQuantity)
+        public Commodity(String commodityName, Decimal commodityWeight, Decimal commodityPrice, Int32 commodityQuantity)
         {
             this.commodityName = commodityName;
             this.commodityWeight = commodityWeight;
@@ -162,6 +204,109 @@ namespace DBApplication
 
             CommodityQuantity = newQuantity;
         }
+
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
+    }
+
+    /// <summary>
+    /// Класс, содержащий поля, необходимые для привязки данных в Главном Окне.
+    /// </summary>
+    public class UserProperty
+    {
+        #region Поля класса.
+        //—————————————————————————————————————————————————————————————————————————————————————————
+
+        /// <summary>
+        /// Поле, содержащее ID товара у данного пользователя.
+        /// </summary>
+        Int32 id;
+
+        /// <summary>
+        /// Сам товар, которым владеет пользователь.
+        /// </summary>
+        Commodity commodity;
+
+        /// <summary>
+        /// Поле, содержащее имя владельца (Пользователь) товара.
+        /// </summary>
+        String ownerName;
+
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
+
+        #region Свойства класса.
+        //—————————————————————————————————————————————————————————————————————————————————————————
+
+        /// <summary>
+        /// Свойство, содержащее ID товара у данного пользователя.
+        /// </summary>
+        public Int32 ID
+        {
+            get
+            {
+                return id;
+            }
+
+            private set
+            {
+                id = value;
+            }
+        }
+
+        /// <summary>
+        /// Свойство, содержащее товар, которым владеет пользователь.
+        /// </summary>
+        public Commodity Commodity
+        {
+            get
+            {
+                return commodity;
+            }
+
+            private set
+            {
+                commodity = value;
+            }
+        }
+
+        /// <summary>
+        /// Свойство, содержащее имя владельца товара.
+        /// </summary>
+        public String OwnerName
+        {
+            get
+            {
+                return ownerName;
+            }
+
+            private set
+            {
+                ownerName = value;
+            }
+        }
+
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
+
+        #region Методы класса.
+        //—————————————————————————————————————————————————————————————————————————————————————————
+
+        /// <summary>
+        /// Конструктор класса.
+        /// </summary>
+        /// <param name="id">Идентификатор товара.</param>
+        /// <param name="commodity">Сам товар.</param>
+        /// <param name="ownerName">Имя владельца товара.</param>
+        public UserProperty(Int32 id, Commodity commodity, String ownerName)
+        {
+            ID = id;
+            Commodity = commodity;
+            OwnerName = ownerName;
+        }
+
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
     }
 
     /// <summary>

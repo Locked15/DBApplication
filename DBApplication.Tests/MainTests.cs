@@ -28,7 +28,7 @@ namespace DBApplication.Tests
         {
             try
             {
-                Commodity testCommodity = new Commodity("Test", 200.4, (Decimal)20.5, 10);
+                Commodity testCommodity = new Commodity("Test", (Decimal)200.4, (Decimal)20.5, 10);
 
                 testCommodity.ChangePrice(Convert.ToDecimal(-200));
             }
@@ -47,7 +47,7 @@ namespace DBApplication.Tests
         {
             try
             {
-                Commodity test = new Commodity("Test", 200.4, (Decimal)300.2, 10);
+                Commodity test = new Commodity("Test", (Decimal)200.4, (Decimal)300.2, 10);
 
                 test.ChangeQuantity(-10);
             }

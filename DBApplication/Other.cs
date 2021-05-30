@@ -10,11 +10,44 @@ namespace DBApplication
     /// </summary>
     public class Other
     {
+        #region Поля класса.
+        //—————————————————————————————————————————————————————————————————————————————————————————
+
         /// <summary>
         /// Поле, содержащее Строку Подключения.
         /// </summary>
-        public static String ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;
-        AttachDbFilename=C:\Users\Земфира\source\repos\DBApplication\DBApplication\БД\DataBase.mdf;
-        Integrated Security = True";
+        public static String ConnectionString;
+
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
+
+        #region Методы класса.
+        //—————————————————————————————————————————————————————————————————————————————————————————
+
+        /// <summary>
+        /// Статический конструктор класса. Нужен для инициалзиации полей.
+        /// </summary>
+        static Other()
+        {
+            #region Инициализация "Строки Подключения".
+            //—————————————————————————————————————————————————————————————————————————————————————————
+
+            String path = Environment.CurrentDirectory;
+
+            for (int i = 0; i < 2; i++)
+            {
+                path = path.Remove(path.LastIndexOf('\\'));
+            }
+
+            ConnectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;
+            AttachDbFilename={path}\БД\DataBase.mdf;
+            Integrated Security = True";
+
+            //—————————————————————————————————————————————————————————————————————————————————————————
+            #endregion
+        }
+
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
     }
 }

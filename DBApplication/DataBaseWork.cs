@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Data;
 using System.Windows;
 using System.Data.SqlClient;
@@ -22,25 +21,21 @@ namespace DBApplication
         /// </summary>
         static Bool initialized;
         /// <summary>
+        /// Поле, содержащее команду для выполнения.
+        /// </summary>
+        static SqlCommand command;
+        /// <summary>
         /// Поле, отвечающее за то, что "readResult" содержит новое значение и готов к перезаписи Источника Данных.
         /// </summary>
         static Bool readyToRefresh;
-        /// <summary>
-        /// Поле, содержащее экземпляр класса "DataSet", нужный для хранения полученных данных.
-        /// </summary>
-        static DataSet readResult;
         /// <summary>
         /// Поле, содержащее экземпляр класса "SqlConnection", нужный для обращения к Базе Данных.
         /// </summary>
         static SqlConnection connectToDB;
         /// <summary>
-        /// Поле, содержащее экземпляр класса "SqlDataAdapter", нужный для выполнения команд.
+        /// Поле, содержащее экземпляр класса "DataSet", нужный для хранения полученных данных.
         /// </summary>
-        static SqlDataAdapter dataSetter;
-        /// <summary>
-        /// Поле, содержащее экземпляр класса "SqlCommandBuilder", нужный для создания комманд для Базы Данных.
-        /// </summary>
-        static SqlCommandBuilder sqlCommands;
+        static DataTable readResult = new DataTable();
 
         /// <summary>
         /// Статический конструктор класса. Инициализирует поле подключения к Базе Данных и обновляет список активных пользователей.
@@ -72,14 +67,14 @@ namespace DBApplication
 
                 else
                 {
-                    SqlCommand commandToInsert = new SqlCommand("INSERT INTO UserTable(UserName, UserPassword, Gender, BirthDate) " +
+                    command = new SqlCommand("INSERT INTO UserTable(UserName, UserPassword, Gender, BirthDate) " +
                     "VALUES(@uName, @uPass, @uGender, @uBirth)", connectToDB);
-                    commandToInsert.Parameters.AddWithValue("@uName", user.Name);
-                    commandToInsert.Parameters.AddWithValue("@uPass", user.Password);
-                    commandToInsert.Parameters.AddWithValue("@uGender", user.UserGender.GetStringFromGender());
-                    commandToInsert.Parameters.AddWithValue("@uBirth", user.BirthDate);
+                    command.Parameters.AddWithValue("@uName", user.Name);
+                    command.Parameters.AddWithValue("@uPass", user.Password);
+                    command.Parameters.AddWithValue("@uGender", user.UserGender.GetStringFromGender());
+                    command.Parameters.AddWithValue("@uBirth", user.BirthDate);
 
-                    commandToInsert.ExecuteNonQuery();
+                    command.ExecuteNonQuery();
 
                     connectToDB.Close();
 
@@ -107,7 +102,7 @@ namespace DBApplication
             {
                 connectToDB.Open();
 
-                SqlCommand command = new SqlCommand($"SELECT * FROM UserTable WHERE UserName = @userName AND UserPassword = @userPassword", connectToDB);
+                command = new SqlCommand($"SELECT * FROM UserTable WHERE UserName = @userName AND UserPassword = @userPassword", connectToDB);
                 command.Parameters.AddWithValue("@userName", name);
                 command.Parameters.AddWithValue("@userPassword", password);
 
@@ -115,7 +110,14 @@ namespace DBApplication
 
                 if (reader.HasRows && reader.Read())
                 {
-                    return new User(reader.GetValue(1) as String, reader.GetValue(2) as String, reader.GetValue(3).GetGenderFromString(), (DateTime)reader.GetValue(4));
+                    String userName = reader.GetString(1);
+                    String userPassword = reader.GetString(2);
+                    Gender userGen = reader.GetValue(3).GetGenderFromString();
+                    DateTime userBirth = (DateTime)reader.GetValue(4);
+
+                    connectToDB.Close();
+
+                    return new User(userName, userPassword, userGen, userBirth);
                 }
 
                 else
@@ -141,49 +143,62 @@ namespace DBApplication
         /// <param name="ownerName">Имя пользователя, которому принадлежит товар.</param>>
         public static void WriteCommodityTable(Commodity commodityToAdd, String ownerName)
         {
-            dataSetter = new SqlDataAdapter("INSERT INTO CommodityTable(CommodityName, CommodityWeight, CommodityPrice, CommodityQuantity, Owner) " +
+            connectToDB.Open();
+
+            command =  new SqlCommand("INSERT INTO CommodityTable(CommodityName, CommodityWeight, CommodityPrice, CommodityQuantity, Owner) " +
             "VALUES(@comName, @comWeight, @comPrice, @comQuantity, @comOwner)", connectToDB);
-            dataSetter.SelectCommand.Parameters.AddWithValue("@comName", commodityToAdd.CommodityName);
-            dataSetter.SelectCommand.Parameters.AddWithValue("@comWeight", commodityToAdd.CommodityWeight);
-            dataSetter.SelectCommand.Parameters.AddWithValue("@comPrice", commodityToAdd.CommodityPrice);
-            dataSetter.SelectCommand.Parameters.AddWithValue("@comQuantity", commodityToAdd.CommodityQuantity);
-            dataSetter.SelectCommand.Parameters.AddWithValue("@comOwner", ownerName);
+            command.Parameters.AddWithValue("@comName", commodityToAdd.CommodityName);
+            command.Parameters.AddWithValue("@comWeight", commodityToAdd.CommodityWeight);
+            command.Parameters.AddWithValue("@comPrice", commodityToAdd.CommodityPrice);
+            command.Parameters.AddWithValue("@comQuantity", commodityToAdd.CommodityQuantity);
+            command.Parameters.AddWithValue("@comOwner", ownerName);
 
-            sqlCommands = new SqlCommandBuilder(dataSetter);
-            sqlCommands.GetUpdateCommand();
+            SqlDataReader reader = command.ExecuteReader();
+            readResult.Load(reader);
 
-            dataSetter.Fill(readResult, "CommodityTable");
             readyToRefresh = true;
+
+            connectToDB.Close();
         }
 
         /// <summary>
         /// Метод для получения товаров пользователя из Базы Данных.
         /// </summary>
         /// <param name="userName">Имя пользователя, чьи товары необходимо найти.</param>
-        /// <param name="gridToFill">Ссылочный параметр. Таблица, которую необходимо заполнить.</param>
-        public static void ReadCommoditiesTable(String userName)
+        /// <return>Список, содержащий значения, пригодные для добавления в таблицу.</return>>
+        public static List<UserProperty> ReadCommoditiesTable(String userName)
         {
+            List<UserProperty> listToReturn = new List<UserProperty>(1);
+
             if (initialized)
             {
                 connectToDB.Open();
 
-                dataSetter = new SqlDataAdapter("SELECT * FROM CommodityTable WHERE Owner = @user", connectToDB);
-                dataSetter.SelectCommand.Parameters.AddWithValue("@user", userName);
+                command = new SqlCommand("SELECT * FROM CommodityTable WHERE Owner = @user", connectToDB);
+                command.Parameters.AddWithValue("@user", userName);
 
-                sqlCommands = new SqlCommandBuilder(dataSetter);
-                sqlCommands.GetInsertCommand();
-                sqlCommands.GetUpdateCommand();
-                sqlCommands.GetDeleteCommand();
-
-                dataSetter.Fill(readResult, "CommodityTable");
-                readyToRefresh = true;
+                SqlDataReader reader = command.ExecuteReader();
+                
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        listToReturn.Add(new UserProperty(Convert.ToInt32(reader.GetValue(0)), 
+                        new Commodity(reader.GetValue(1) as String, Convert.ToDecimal(reader.GetValue(2)), 
+                        Convert.ToDecimal(reader.GetValue(3)), Convert.ToInt32(reader.GetValue(4))), reader.GetString(5)));
+                    }
+                }
 
                 connectToDB.Close();
+
+                return listToReturn;
             }
 
             else
             {
                 MessageBox.Show("Обнаружена попытка обращения к Базе Данных до инициализации.", "Внимание!", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                return null;
             }
         }
 
@@ -200,10 +215,10 @@ namespace DBApplication
             {
                 connectToDB.Open();
 
-                SqlCommand commandToSearch = new SqlCommand("SELECT * FROM UserTable WHERE UserName = @uName", connectToDB);
-                commandToSearch.Parameters.AddWithValue("@uName", userName);
+                command = new SqlCommand("SELECT * FROM UserTable WHERE UserName = @uName", connectToDB);
+                command.Parameters.AddWithValue("@uName", userName);
 
-                SqlDataReader reader = commandToSearch.ExecuteReader();
+                SqlDataReader reader = command.ExecuteReader();
 
                 if (close)
                 {
@@ -222,20 +237,6 @@ namespace DBApplication
                 MessageBox.Show("Обнаружена попытка обращения к Базе Данных до инициализации.", "Внимание!", MessageBoxButton.OK, MessageBoxImage.Warning);
 
                 return false;
-            }
-        }
-
-        /// <summary>
-        /// Метод для обновления источника информации у "ListView".
-        /// </summary>
-        /// <param name="gridToFill">Ссылочное значение. "ListView", который необходимо обновить.</param>
-        public static void UpdateReferences(ref ListView gridToFill)
-        {
-            if (readyToRefresh)
-            {
-                gridToFill.ItemsSource = readResult.Tables;
-
-                readyToRefresh = false;
             }
         }
     }
