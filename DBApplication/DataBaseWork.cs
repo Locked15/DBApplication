@@ -25,10 +25,6 @@ namespace DBApplication
         /// </summary>
         static SqlCommand command;
         /// <summary>
-        /// Поле, отвечающее за то, что "readResult" содержит новое значение и готов к перезаписи Источника Данных.
-        /// </summary>
-        static Bool readyToRefresh;
-        /// <summary>
         /// Поле, содержащее экземпляр класса "SqlConnection", нужный для обращения к Базе Данных.
         /// </summary>
         static SqlConnection connectToDB;
@@ -155,8 +151,6 @@ namespace DBApplication
 
             SqlDataReader reader = command.ExecuteReader();
             readResult.Load(reader);
-
-            readyToRefresh = true;
 
             connectToDB.Close();
         }
