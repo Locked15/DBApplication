@@ -16,22 +16,34 @@ namespace DBApplication
     /// </summary>
     public static class DataBaseWork
     {
+        #region Поля класса.
+        //—————————————————————————————————————————————————————————————————————————————————————————
+
         /// <summary>
         /// Поле, отвечающее за то, были ли инициализированы поля для подключения к Базе Данных.
         /// </summary>
         static Bool initialized;
+
         /// <summary>
         /// Поле, содержащее команду для выполнения.
         /// </summary>
         static SqlCommand command;
+
         /// <summary>
         /// Поле, содержащее экземпляр класса "SqlConnection", нужный для обращения к Базе Данных.
         /// </summary>
         static SqlConnection connectToDB;
+
         /// <summary>
         /// Поле, содержащее экземпляр класса "DataSet", нужный для хранения полученных данных.
         /// </summary>
         static DataTable readResult = new DataTable();
+
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
+
+        #region Методы класса.
+        //—————————————————————————————————————————————————————————————————————————————————————————
 
         /// <summary>
         /// Статический конструктор класса. Инициализирует поле подключения к Базе Данных и обновляет список активных пользователей.
@@ -136,8 +148,9 @@ namespace DBApplication
         /// Метод для добавления Товара (экземпляр "Commodity") в Базу Данных.
         /// </summary>
         /// <param name="commodityToAdd">Товар, который нужно добавить в Базу Данных.</param>
-        /// <param name="ownerName">Имя пользователя, которому принадлежит товар.</param>>
-        public static void WriteCommodityTable(Commodity commodityToAdd, String ownerName)
+        /// <param name="ownerName">Имя пользователя, которому принадлежит товар.</param>
+        /// <return>Экземпляр класса "UserProperty", который был добавлен в Базу Данных.</return>
+        public static UserProperty WriteCommodityTable(Commodity commodityToAdd, String ownerName)
         {
             connectToDB.Open();
 
@@ -153,6 +166,29 @@ namespace DBApplication
             readResult.Load(reader);
 
             connectToDB.Close();
+
+            UserProperty toReturn = new UserProperty(GetLastCommodityId(), commodityToAdd, ownerName);
+
+            return toReturn;
+        }
+
+        /// <summary>
+        /// Метод для получения индекса последнего элемента в таблице с Товарами.
+        /// </summary>
+        /// <returns>Индекс последнего элемента.</returns>
+        public static Int32 GetLastCommodityId()
+        {
+            connectToDB.Open();
+
+            command = new SqlCommand("SELECT MAX(Id) FROM CommodityTable", connectToDB);
+
+            SqlDataReader reader = command.ExecuteReader();
+            reader.Read();
+
+            Int32 toReturn = reader.GetInt32(0);
+
+            connectToDB.Close();
+            return toReturn;
         }
 
         /// <summary>
@@ -233,5 +269,8 @@ namespace DBApplication
                 return false;
             }
         }
+
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
     }
 }

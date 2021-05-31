@@ -140,6 +140,8 @@ namespace DBApplication
             GoToComNameBlockButton.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
             GoToComNameBlockButton.BorderThickness = new Thickness(0);
 
+            AddNewCommodity_ComNameBlock_InputComNameBox.Focus();
+
             if (lastAddButton != null)
             {
                 lastAddButton.Background = new SolidColorBrush(Color.FromRgb(211, 211, 211));
@@ -311,15 +313,16 @@ namespace DBApplication
 
             if (nameIsCorrect && weightIsCorrect && quantityIsCorrect && priceIsCorrect)
             {
-                DataBaseWork.WriteCommodityTable(new Commodity(AddNewCommodity_ComNameBlock_InputComNameBox.Text, commodityWeight, commodityPrice, commodityQuantity),
-                currentUser.Name);
+                currentUserProperties.Add(DataBaseWork.WriteCommodityTable(new Commodity(AddNewCommodity_ComNameBlock_InputComNameBox.Text, 
+                commodityWeight, commodityPrice, commodityQuantity), currentUser.Name));
 
                 AddNewCommodity_ComNameBlock_InputComNameBox.Text = "";
                 AddNewCommodity_ComWeightBlock_InputComWeightBox.Text = "";
                 AddNewCommodity_ComQuantityBlock_InputComQuantityBox.Text = "";
                 AddNewCommodity_ComPriceBlock_InputComPriceBox.Text = "";
 
-                UpdateSheetButton_Click(sender, e);
+                Sheet.ItemsSource = null;
+                Sheet.ItemsSource = currentUserProperties;
 
                 AddNewCommodityBlock.Visibility = Visibility.Hidden;
                 MainDataBaseBlock.Visibility = Visibility.Visible;
