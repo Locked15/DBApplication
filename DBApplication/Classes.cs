@@ -73,7 +73,7 @@ namespace DBApplication
     /// </summary>
     public struct Commodity
     {
-        #region Поля класса.
+        #region Поля структуры.
         //—————————————————————————————————————————————————————————————————————————————————————————
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace DBApplication
         //—————————————————————————————————————————————————————————————————————————————————————————
         #endregion
 
-        #region Свойства класса.
+        #region Свойства структуры.
         //—————————————————————————————————————————————————————————————————————————————————————————
 
         /// <summary>
@@ -134,9 +134,15 @@ namespace DBApplication
                 return commodityPrice;
             }
 
-            private set
+            set
             {
-                commodityPrice = value;
+                //Так как "throw" прервет исполнение, то блок 'else' прописывать нет смысла.
+                if (value < 0)
+                {
+                    throw new CommodityNewPriceIsNegativeException("Выбрана отрицательная цена для товара!");
+                }
+
+                CommodityPrice = value;
             }
         }
 
@@ -150,16 +156,22 @@ namespace DBApplication
                 return commodityQuantity;
             }
 
-            private set
+            set
             {
-                commodityQuantity = value;
+                //Так как "throw" прервет исполнение, то блок 'else' прописывать нет смысла.
+                if (value < 0)
+                {
+                    throw new CommodityNewQuantityIsNegativeException("Выбрано отрицательное количество для товара!");
+                }
+
+                CommodityQuantity = value;
             }
         }
 
         //—————————————————————————————————————————————————————————————————————————————————————————
         #endregion
 
-        #region Методы класса.
+        #region Методы структуры.
         //—————————————————————————————————————————————————————————————————————————————————————————
 
         /// <summary>
@@ -175,35 +187,6 @@ namespace DBApplication
             this.commodityWeight = commodityWeight;
             this.commodityPrice = commodityPrice;
             this.commodityQuantity = commodityQuantity;
-        }
-
-        /// <summary>
-        /// Метод для смены цены товара.
-        /// </summary>
-        /// <param name="newPrice">Новая цена на товар.</param>
-        public void ChangePrice(Decimal newPrice)
-        {
-            //Так как "throw" прервет исполнение, то блок 'else' прописывать нет смысла.
-            if (newPrice < 0)
-            {
-                throw new CommodityNewPriceIsNegativeException("Выбрана отрицательная цена для товара!");
-            }
-
-            CommodityPrice = newPrice;
-        }
-
-        /// <summary>
-        /// Метод для смены количества товара.
-        /// </summary>
-        public void ChangeQuantity(Int32 newQuantity)
-        {
-            //Так как "throw" прервет исполнение, то блок 'else' прописывать нет смысла.
-            if (newQuantity < 0)
-            {
-                throw new CommodityNewQuantityIsNegativeException("Выбрано отрицательное количество для товара!");
-            }
-
-            CommodityQuantity = newQuantity;
         }
 
         //—————————————————————————————————————————————————————————————————————————————————————————

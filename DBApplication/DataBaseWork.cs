@@ -173,6 +173,32 @@ namespace DBApplication
         }
 
         /// <summary>
+        /// Метод для замены значения определенного элемента таблицы на новое.
+        /// </summary>
+        /// <param name="id">ID заменяемого значения.</param>
+        /// <param name="newCommodity">Новый товар, который заменит старый.</param>
+        /// <param name="ownerName">Имя владельца товара.</param>
+        /// <returns>Экземпляр класса "UserProperty".</returns>
+        public static UserProperty ChangeCommodityInTable(Int32 id, Commodity newCommodity, String ownerName)
+        {
+            connectToDB.Open();
+
+            command = new SqlCommand("UPDATE CommodityTable SET CommodityPrice = @newPrice, " +
+            "CommodityQuantity = @newQuantity WHERE Id = @changingID", connectToDB);
+            command.Parameters.AddWithValue("@newPrice", newCommodity.CommodityPrice);
+            command.Parameters.AddWithValue("@newQuantity", newCommodity.CommodityQuantity);
+            command.Parameters.AddWithValue("@changingID", id + 1);
+
+            command.ExecuteNonQuery();
+
+            connectToDB.Close();
+
+            UserProperty toReturn = new UserProperty(id + 1, newCommodity, ownerName);
+
+            return toReturn;
+        }
+
+        /// <summary>
         /// Метод для получения индекса последнего элемента в таблице с Товарами.
         /// </summary>
         /// <returns>Индекс последнего элемента.</returns>
@@ -204,8 +230,9 @@ namespace DBApplication
             {
                 connectToDB.Open();
 
-                command = new SqlCommand("SELECT * FROM CommodityTable WHERE Owner = @user", connectToDB);
+                command = new SqlCommand("SELECT * FROM CommodityTable WHERE Owner = @user AND Deleted = @del", connectToDB);
                 command.Parameters.AddWithValue("@user", userName);
+                command.Parameters.AddWithValue("@del", 0);
 
                 SqlDataReader reader = command.ExecuteReader();
                 

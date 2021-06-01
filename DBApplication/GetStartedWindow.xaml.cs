@@ -136,8 +136,6 @@ namespace DBApplication
         public GetStartedWindow()
         {
             InitializeComponent();
-
-            MessageBox.Show(DataBaseWork.GetLastCommodityId().ToString());
         }
 
         /// <summary>

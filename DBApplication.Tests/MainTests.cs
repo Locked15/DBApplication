@@ -21,7 +21,7 @@ namespace DBApplication.Tests
         }
 
         /// <summary>
-        /// Тест для проверки метода ".ChangePrice()".
+        /// Тест для проверки свойства "CommodityPrice" у структуры Commodity.
         /// </summary>
         [Fact]
         public void ChangePrice_SendMinus200_ReturnException()
@@ -30,7 +30,7 @@ namespace DBApplication.Tests
             {
                 Commodity testCommodity = new Commodity("Test", (Decimal)200.4, (Decimal)20.5, 10);
 
-                testCommodity.ChangePrice(Convert.ToDecimal(-200));
+                testCommodity.CommodityPrice = Convert.ToDecimal(-200);
             }
 
             catch (CommodityNewPriceIsNegativeException except)
@@ -40,7 +40,7 @@ namespace DBApplication.Tests
         }
 
         /// <summary>
-        /// Тест для проверки метода ".ChangeQuantity()". 
+        /// Тест для проверки свойства "CommodityQuantity" у структуры Commodity. 
         /// </summary>
         [Fact]
         public void ChangeQuantity_SendMinus5_ReturnException()
@@ -49,7 +49,7 @@ namespace DBApplication.Tests
             {
                 Commodity test = new Commodity("Test", (Decimal)200.4, (Decimal)300.2, 10);
 
-                test.ChangeQuantity(-10);
+                test.CommodityQuantity = -5;
             }
 
             catch (CommodityNewQuantityIsNegativeException except)
