@@ -1,81 +1,81 @@
-﻿<Window x:Class="DBApplication.MainWindow" Name="ProgramWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DBApplication"
-        mc:Ignorable="d"
-        Title="База Данных" Height="450" Width="800" SizeToContent="Manual"
-        MinHeight="400" MinWidth="800"
-        Background="LightGray"
-        Loaded="Window_Loaded"
-        Icon="Resources/Database-Connection.ico">
+﻿<Window x:Class = "DBApplication.MainWindow" Name = "ProgramWindow"
+        xmlns = "http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x = "http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d = "http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc = "http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local = "clr-namespace:DBApplication"
+        mc:Ignorable = "d"
+        Title = "База Данных" Height = "450" Width = "800" SizeToContent = "Manual"
+        MinHeight = "400" MinWidth = "800"
+        Background = "LightGray"
+        Loaded = "Window_Loaded"
+        Icon = "Resources/Database-Connection.ico">
 
     <Window.Resources>
-        <Style x:Key="FocusVisual">
-            <Setter Property="Control.Template">
+        <Style x:Key = "FocusVisual">
+            <Setter Property = "Control.Template">
                 <Setter.Value>
                     <ControlTemplate>
-                        <Rectangle Margin="2" SnapsToDevicePixels="true" 
-                        Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" 
-                        StrokeThickness="1" StrokeDashArray="1 2"/>
+                        <Rectangle Margin = "2" SnapsToDevicePixels = "true" 
+                        Stroke = "{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" 
+                        StrokeThickness = "1" StrokeDashArray = "1 2"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
-        <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
-        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
-        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
-        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
-        <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
-        <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
-        <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
-        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+        <SolidColorBrush x:Key = "Button.Static.Background" Color = "#FFDDDDDD"/>
+        <SolidColorBrush x:Key = "Button.Static.Border" Color = "#FF707070"/>
+        <SolidColorBrush x:Key = "Button.MouseOver.Background" Color = "#FFBEE6FD"/>
+        <SolidColorBrush x:Key = "Button.MouseOver.Border" Color = "#FF3C7FB1"/>
+        <SolidColorBrush x:Key = "Button.Pressed.Background" Color = "#FFC4E5F6"/>
+        <SolidColorBrush x:Key = "Button.Pressed.Border" Color = "#FF2C628B"/>
+        <SolidColorBrush x:Key = "Button.Disabled.Background" Color = "#FFF4F4F4"/>
+        <SolidColorBrush x:Key = "Button.Disabled.Border" Color = "#FFADB2B5"/>
+        <SolidColorBrush x:Key = "Button.Disabled.Foreground" Color = "#FF838383"/>
 
-        <Style x:Key="MainButtonsStyle" TargetType="{x:Type Button}">
-            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
-            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="1"/>
+        <Style x:Key = "MainButtonsStyle" TargetType = "{x:Type Button}">
+            <Setter Property = "FocusVisualStyle" Value = "{StaticResource FocusVisual}"/>
+            <Setter Property = "Background" Value = "{StaticResource Button.Static.Background}"/>
+            <Setter Property = "BorderBrush" Value = "{StaticResource Button.Static.Border}"/>
+            <Setter Property = "Foreground" Value = "{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property = "BorderThickness" Value = "1"/>
+            <Setter Property = "HorizontalContentAlignment" Value = "Center"/>
+            <Setter Property = "VerticalContentAlignment" Value = "Center"/>
+            <Setter Property = "Padding" Value = "1"/>
 
-            <Setter Property="Template">
+            <Setter Property = "Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" 
-                        BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" 
-                        SnapsToDevicePixels="true">
-                            <ContentPresenter x:Name="contentPresenter" Focusable="False" 
-                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}"
-                            RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    <ControlTemplate TargetType = "{x:Type Button}">
+                        <Border x:Name = "border" BorderBrush = "{TemplateBinding BorderBrush}" 
+                        BorderThickness = "{TemplateBinding BorderThickness}" Background = "{TemplateBinding Background}" 
+                        SnapsToDevicePixels = "true">
+                            <ContentPresenter x:Name = "contentPresenter" Focusable = "False" 
+                            HorizontalAlignment = "{TemplateBinding HorizontalContentAlignment}" Margin = "{TemplateBinding Padding}"
+                            RecognizesAccessKey = "True" SnapsToDevicePixels = "{TemplateBinding SnapsToDevicePixels}" 
+                            VerticalAlignment = "{TemplateBinding VerticalContentAlignment}"/>
                         </Border>
 
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsDefaulted" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" 
-                                Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            <Trigger Property = "IsDefaulted" Value = "true">
+                                <Setter Property = "BorderBrush" TargetName = "border" 
+                                Value = "{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
                             </Trigger>
 
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="Transparent"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="LightGray"/>
+                            <Trigger Property = "IsMouseOver" Value = "true">
+                                <Setter Property = "Background" TargetName = "border" Value = "Transparent"/>
+                                <Setter Property = "BorderBrush" TargetName = "border" Value = "LightGray"/>
                             </Trigger>
 
-                            <Trigger Property="IsPressed" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="LightGray"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="Gray"/>
+                            <Trigger Property = "IsPressed" Value = "true">
+                                <Setter Property = "Background" TargetName = "border" Value = "LightGray"/>
+                                <Setter Property = "BorderBrush" TargetName = "border" Value = "Gray"/>
                             </Trigger>
 
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
-                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                            <Trigger Property = "IsEnabled" Value = "false">
+                                <Setter Property = "Background" TargetName = "border" Value = "{StaticResource Button.Disabled.Background}"/>
+                                <Setter Property = "BorderBrush" TargetName = "border" Value = "{StaticResource Button.Disabled.Border}"/>
+                                <Setter Property = "TextElement.Foreground" TargetName = "contentPresenter" Value = "{StaticResource Button.Disabled.Foreground}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -83,41 +83,41 @@
             </Setter>
         </Style>
 
-        <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
-        <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
-        <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
+        <SolidColorBrush x:Key = "TextBox.Static.Border" Color = "#FFABAdB3"/>
+        <SolidColorBrush x:Key = "TextBox.MouseOver.Border" Color = "#FF7EB4EA"/>
+        <SolidColorBrush x:Key = "TextBox.Focus.Border" Color = "#FF569DE5"/>
 
-        <Style x:Key="InputBoxStyle" TargetType="{x:Type TextBox}">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="LightGray"/>
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-            <Setter Property="AllowDrop" Value="true"/>
-            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
-            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Style x:Key = "InputBoxStyle" TargetType = "{x:Type TextBox}">
+            <Setter Property = "Background" Value = "Transparent"/>
+            <Setter Property = "BorderBrush" Value = "LightGray"/>
+            <Setter Property = "Foreground" Value = "{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property = "BorderThickness" Value = "1"/>
+            <Setter Property = "KeyboardNavigation.TabNavigation" Value = "None"/>
+            <Setter Property = "HorizontalContentAlignment" Value = "Center"/>
+            <Setter Property = "VerticalContentAlignment" Value = "Center"/>
+            <Setter Property = "FocusVisualStyle" Value = "{x:Null}"/>
+            <Setter Property = "AllowDrop" Value = "true"/>
+            <Setter Property = "ScrollViewer.PanningMode" Value = "VerticalFirst"/>
+            <Setter Property = "Stylus.IsFlicksEnabled" Value = "False"/>
 
-            <EventSetter Event="KeyUp" Handler="KeyIsUsed"/>
+            <EventSetter Event = "KeyUp" Handler = "KeyIsUsed"/>
 
-            <Setter Property="Template">
+            <Setter Property = "Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type TextBox}">
-                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
-                        Background="{TemplateBinding Background}" SnapsToDevicePixels="True" CornerRadius="30">
-                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" 
-                            VerticalScrollBarVisibility="Hidden"/>
+                    <ControlTemplate TargetType = "{x:Type TextBox}">
+                        <Border x:Name = "border" BorderBrush = "{TemplateBinding BorderBrush}" BorderThickness = "{TemplateBinding BorderThickness}" 
+                        Background = "{TemplateBinding Background}" SnapsToDevicePixels = "True" CornerRadius = "30">
+                            <ScrollViewer x:Name = "PART_ContentHost" Focusable = "false" HorizontalScrollBarVisibility = "Hidden" 
+                            VerticalScrollBarVisibility = "Hidden"/>
                         </Border>
 
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            <Trigger Property = "IsEnabled" Value = "false">
+                                <Setter Property = "Opacity" TargetName = "border" Value = "0.56"/>
                             </Trigger>
 
-                            <Trigger Property="IsKeyboardFocused" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="LightGray"/>
+                            <Trigger Property = "IsKeyboardFocused" Value = "true">
+                                <Setter Property = "BorderBrush" TargetName = "border" Value = "LightGray"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -127,41 +127,41 @@
             <Style.Triggers>
                 <MultiTrigger>
                     <MultiTrigger.Conditions>
-                        <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
-                        <Condition Property="IsSelectionActive" Value="false"/>
+                        <Condition Property = "IsInactiveSelectionHighlightEnabled" Value = "true"/>
+                        <Condition Property = "IsSelectionActive" Value = "false"/>
                     </MultiTrigger.Conditions>
 
-                    <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                    <Setter Property = "SelectionBrush" Value = "{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
                 </MultiTrigger>
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="AddCommodityButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="FontFamily" Value="Georgia"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Style x:Key = "AddCommodityButtonStyle" TargetType = "Button">
+            <Setter Property = "Background" Value = "White"/>
+            <Setter Property = "FontSize" Value = "16"/>
+            <Setter Property = "FontFamily" Value = "Georgia"/>
+            <Setter Property = "VerticalContentAlignment" Value = "Center"/>
+            <Setter Property = "HorizontalContentAlignment" Value = "Center"/>
 
-            <Setter Property="Template">
+            <Setter Property = "Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="border" BorderThickness="1" Background="Transparent" 
-                        SnapsToDevicePixels="true" BorderBrush="LightGray" CornerRadius="10">
-                            <ContentPresenter x:Name="contentPresenter" Focusable="False" 
-                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}"
-                            RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    <ControlTemplate TargetType = "Button">
+                        <Border x:Name = "border" BorderThickness = "1" Background = "Transparent" 
+                        SnapsToDevicePixels = "true" BorderBrush = "LightGray" CornerRadius = "10">
+                            <ContentPresenter x:Name = "contentPresenter" Focusable = "False" 
+                            HorizontalAlignment = "{TemplateBinding HorizontalContentAlignment}" Margin = "{TemplateBinding Padding}"
+                            RecognizesAccessKey = "True" SnapsToDevicePixels = "{TemplateBinding SnapsToDevicePixels}" 
+                            VerticalAlignment = "{TemplateBinding VerticalContentAlignment}"/>
                         </Border>
 
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="Gray"/>
-                                <Setter Property="BorderBrush" Value="Gray"/>
+                            <Trigger Property = "IsPressed" Value = "True">
+                                <Setter Property = "Background" TargetName = "border" Value = "Gray"/>
+                                <Setter Property = "BorderBrush" TargetName = "border" Value = "Gray"/>
                             </Trigger>
 
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="LightGray"/>
+                            <Trigger Property = "IsMouseOver" Value = "True">
+                                <Setter Property = "Background" TargetName = "border" Value = "LightGray"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -169,276 +169,333 @@
             </Setter>
 
         </Style>
+
+        <DataTemplate x:Key = "CheckCell">
+            <Grid>
+                <CheckBox IsChecked = "{Binding Del, Mode = TwoWay, UpdateSourceTrigger = PropertyChanged}"/>
+            </Grid>
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="45*"/>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="220*"/>
-            <RowDefinition Height="30*"/>
+            <RowDefinition Height = "45*"/>
+            <RowDefinition Height = "40*"/>
+            <RowDefinition Height = "40*"/>
+            <RowDefinition Height = "40*"/>
+            <RowDefinition Height = "40*"/>
+            <RowDefinition Height = "220*"/>
+            <RowDefinition Height = "30*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="120*"/>
-            <ColumnDefinition Width="630*"/>
+            <ColumnDefinition Width = "120*"/>
+            <ColumnDefinition Width = "630*"/>
         </Grid.ColumnDefinitions>
 
-        <Button Name="ExitAccountButton" Grid.Row="0" Grid.Column="0" Click="ExitAccountButton_Click">
-            <Grid Name="ExitGrid">
-                <Image Name="ExitAccountButton_Image" Source="Resources/Exit - 01.png" Height="40" Width="40" Margin="0, 0, 75, 0"/>
+        <Button Name = "ExitAccountButton" Grid.Row = "0" Grid.Column = "0" Click = "ExitAccountButton_Click">
+            <Grid Name = "ExitGrid">
+                <Image Name = "ExitAccountButton_Image" Source = "Resources/Exit - 01.png" Height = "40" Width = "40" Margin = "0, 0, 75, 0"/>
 
-                <TextBlock Name="ExitAccountButton_TextBlock" Text="Выход." VerticalAlignment="Center" HorizontalAlignment="Right"
-                Margin="20, 0, 0, 0" FontSize="18"/>
+                <TextBlock Name = "ExitAccountButton_TextBlock" Text = "Выход." VerticalAlignment = "Center" HorizontalAlignment = "Right"
+                Margin = "20, 0, 0, 0" FontSize = "18"/>
             </Grid>
         </Button>
 
-        <Button Name="AddCommodityButton" Grid.Row="1" Grid.Column="0" Click="AddCommodityButton_Click" GotFocus="MainButtonIsFocused" 
-        Style="{DynamicResource MainButtonsStyle}">
-            <Grid Name="AddGrid">
-                <Image Name="AddCommodityButton_Image" Source="Resources/Add-New.png" Height="30" Width="30" Margin="0, 0, 85, 0"/>
+        <Button Name = "AddCommodityButton" Grid.Row = "1" Grid.Column = "0" Click = "AddCommodityButton_Click" GotFocus = "MainButtonIsFocused" 
+        Style = "{DynamicResource MainButtonsStyle}">
+            <Grid Name = "AddGrid">
+                <Image Name = "AddCommodityButton_Image" Source = "Resources/Add-New.png" Height = "30" Width = "30" Margin = "0, 0, 85, 0"/>
 
-                <TextBlock Name="AddCommodityButton_TextBlock" Text="Добавить." VerticalAlignment="Center" HorizontalAlignment="Right"
-                Margin="20, 0, 0, 0" FontSize="16"/>
+                <TextBlock Name = "AddCommodityButton_TextBlock" Text = "Добавить." VerticalAlignment = "Center" HorizontalAlignment = "Right"
+                Margin = "20, 0, 0, 0" FontSize = "16"/>
             </Grid>
         </Button>
 
-        <Button Name="ChangeCommodityButton" Grid.Row="2" Grid.Column="0" Click="ChangeCommodityButton_Click" GotFocus="MainButtonIsFocused"
-        Style="{DynamicResource MainButtonsStyle}">
-            <Grid Name="ChangeGrid">
-                <Image Name="ChangeCommodityButton_Image" Source="Resources/Change.png" Width="30" Height="30" Margin="0, 0, 85, 0"/>
+        <Button Name = "ChangeCommodityButton" Grid.Row = "2" Grid.Column = "0" Click = "ChangeCommodityButton_Click" GotFocus = "MainButtonIsFocused"
+        Style = "{DynamicResource MainButtonsStyle}">
+            <Grid Name = "ChangeGrid">
+                <Image Name = "ChangeCommodityButton_Image" Source = "Resources/Change.png" Width = "30" Height = "30" Margin = "0, 0, 85, 0"/>
 
-                <TextBlock Name="ChangeCommodityButton_TextBlock" Text="Изменить." VerticalAlignment="Center" HorizontalAlignment="Right"
-                Margin="20, 0, 0, 0" FontSize="16"/>
+                <TextBlock Name = "ChangeCommodityButton_TextBlock" Text = "Изменить." VerticalAlignment = "Center" HorizontalAlignment = "Right"
+                Margin = "20, 0, 0, 0" FontSize = "16"/>
             </Grid>
         </Button>
 
-        <Button Name="DeleteCommodityButton" Grid.Row="3" Grid.Column="0" Click="DeleteCommodityButton_Click" GotFocus="MainButtonIsFocused"
-        Style="{DynamicResource MainButtonsStyle}">
-            <Grid Name="DeleteGrid">
-                <Image Name="DeleteCommodityButton_Image" Source="Resources/Delete.png" Width="30" Height="30" Margin="0, 0, 85, 0"/>
+        <Button Name = "DeleteCommodityButton" Grid.Row = "3" Grid.Column = "0" Click = "DeleteCommodityButton_Click" GotFocus = "MainButtonIsFocused"
+        Style = "{DynamicResource MainButtonsStyle}">
+            <Grid Name = "DeleteGrid">
+                <Image Name = "DeleteCommodityButton_Image" Source = "Resources/Delete.png" Width = "30" Height = "30" Margin = "0, 0, 85, 0"/>
 
-                <TextBlock Name="DeleteCommodityButton_TextBlock" Text="Удалить." VerticalAlignment="Center" HorizontalAlignment="Right"
-                Margin="20, 0, 0, 0" FontSize="16"/>
+                <TextBlock Name = "DeleteCommodityButton_TextBlock" Text = "Удалить." VerticalAlignment = "Center" HorizontalAlignment = "Right"
+                Margin = "20, 0, 0, 0" FontSize = "16"/>
             </Grid>
         </Button>
 
-        <Button Name="UpdateSheetButton" Grid.Row="4" Grid.Column="0" Click="UpdateSheetButton_Click">
-            <Grid Name="UpdateGrid">
-                <Image Name="UpdateSheetButton_Image" Source="Resources/Reload.png" Width="30" Height="30" Margin="0, 0, 85, 0"/>
+        <Button Name = "UpdateSheetButton" Grid.Row = "4" Grid.Column = "0" Click = "UpdateSheetButton_Click">
+            <Grid Name = "UpdateGrid">
+                <Image Name = "UpdateSheetButton_Image" Source = "Resources/Reload.png" Width = "30" Height = "30" Margin = "0, 0, 85, 0"/>
 
-                <TextBlock Name="UpdateSheetButton_TextBlock" Text="Обновить." VerticalAlignment="Center" HorizontalAlignment="Right"
-                Margin="20, 0, 0, 0" FontSize="16"/>
+                <TextBlock Name = "UpdateSheetButton_TextBlock" Text = "Обновить." VerticalAlignment = "Center" HorizontalAlignment = "Right"
+                Margin = "20, 0, 0, 0" FontSize = "16"/>
             </Grid>
         </Button>
 
-        <Button Name="InfoAboutProgramButton" Grid.Row="6" Grid.Column="0" Click="InfoAboutProgramButton_Click">
-            <Grid Name="InfoButtonGrid">
-                <Image Name="InfoAboutProgramButton_Image" Source="Resources/Help.png" Width="25" Height="25" Margin="0, 0, 90, 0"/>
+        <Button Name = "InfoAboutProgramButton" Grid.Row = "6" Grid.Column = "0" Click = "InfoAboutProgramButton_Click">
+            <Grid Name = "InfoButtonGrid">
+                <Image Name = "InfoAboutProgramButton_Image" Source = "Resources/Help.png" Width = "25" Height = "25" Margin = "0, 0, 90, 0"/>
 
-                <TextBlock Name="InfoAboutProgramButton_TextBlock" Text="Сведения." VerticalAlignment="Center" HorizontalAlignment="Right"
-                Margin="20, 0, 0, 0" FontSize="18"/>
+                <TextBlock Name = "InfoAboutProgramButton_TextBlock" Text = "Сведения." VerticalAlignment = "Center" HorizontalAlignment = "Right"
+                Margin = "20, 0, 0, 0" FontSize = "18"/>
             </Grid>
         </Button>
 
-        <Grid Name="MainDataBaseBlock" Grid.Row="0" Grid.RowSpan="7" Grid.Column="2" Visibility="Visible">
-            <ListView Name="Sheet">
+        <Grid Name = "MainDataBaseBlock" Grid.Row = "0" Grid.RowSpan = "7" Grid.Column = "2" Visibility = "Hidden">
+            <ListView Name = "Sheet">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn x:Name="idColumn" DisplayMemberBinding="{Binding Path=ID}" 
-                        Header="ID:" Width="30"/>
+                        <GridViewColumn x:Name = "idColumn" DisplayMemberBinding = "{Binding Path = ID}" 
+                        Header = "ID:" Width = "30"/>
 
-                        <GridViewColumn x:Name="commodityNameColumn" DisplayMemberBinding="{Binding Path=Commodity.CommodityName}"
-                        Header="Имя товара:" Width="170"/>
+                        <GridViewColumn x:Name = "commodityNameColumn" DisplayMemberBinding = "{Binding Path = Commodity.CommodityName}"
+                        Header = "Имя товара:" Width = "170"/>
 
-                        <GridViewColumn x:Name="commodityWeightColumn" DisplayMemberBinding="{Binding Path=Commodity.CommodityWeight}"
-                        Header="Вес товара:" Width="120"/>
+                        <GridViewColumn x:Name = "commodityWeightColumn" DisplayMemberBinding = "{Binding Path = Commodity.CommodityWeight}"
+                        Header = "Вес товара:" Width = "120"/>
 
-                        <GridViewColumn x:Name="commodityPriceColumn" DisplayMemberBinding="{Binding Path=Commodity.CommodityPrice, StringFormat=0.00}"
-                        Header="Цена товара:" Width="170" />
+                        <GridViewColumn x:Name = "commodityPriceColumn" DisplayMemberBinding = "{Binding Path = Commodity.CommodityPrice, StringFormat = 0.00}"
+                        Header = "Цена товара:" Width = "170" />
 
-                        <GridViewColumn x:Name="commodityQuantityColumn" DisplayMemberBinding="{Binding Path=Commodity.CommodityQuantity}"
-                        Header="Количество товара:" Width="170"/>
+                        <GridViewColumn x:Name = "commodityQuantityColumn" DisplayMemberBinding = "{Binding Path = Commodity.CommodityQuantity}"
+                        Header = "Количество товара:" Width = "170"/>
                     </GridView>
                 </ListView.View>
 
                 <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Style TargetType = "ListViewItem">
+                        <Setter Property = "HorizontalContentAlignment" Value = "Center"/>
                     </Style>
                 </ListView.ItemContainerStyle>
             </ListView>
         </Grid>
 
-        <Grid Name="AddNewCommodityBlock" Grid.Row="0" Grid.Column="1" Grid.RowSpan="7" Visibility="Hidden">
+        <Grid Name = "AddNewCommodityBlock" Grid.Row = "0" Grid.Column = "1" Grid.RowSpan = "7" Visibility = "Hidden">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="30*"/>
-                <ColumnDefinition Width="30*"/>
-                <ColumnDefinition Width="30*"/>
-                <ColumnDefinition Width="30*"/>
-                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width = "30*"/>
+                <ColumnDefinition Width = "30*"/>
+                <ColumnDefinition Width = "30*"/>
+                <ColumnDefinition Width = "30*"/>
+                <ColumnDefinition Width = "30*"/>
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="42*"/>
-                <RowDefinition Height="380*"/>
+                <RowDefinition Height = "42*"/>
+                <RowDefinition Height = "380*"/>
             </Grid.RowDefinitions>
 
-            <Button Name="GoToComNameBlockButton" Grid.Row="0" Grid.Column="0" Content="Имя товара." Click="GoToComNameBlock_Click"
-            FontFamily="Georgia" FontSize="16"/>
+            <Button Name = "GoToComNameBlockButton" Grid.Row = "0" Grid.Column = "0" Content = "Имя товара." Click = "GoToComNameBlock_Click"
+            FontFamily = "Georgia" FontSize = "16"/>
 
-            <Button Name="GoToComWeightBlockButton" Grid.Row="0" Grid.Column="1" Content="Вес товара." Click="GoToComWeightBlock_Click"
-            FontFamily="Georgia" FontSize="16"/>
+            <Button Name = "GoToComWeightBlockButton" Grid.Row = "0" Grid.Column = "1" Content = "Вес товара." Click = "GoToComWeightBlock_Click"
+            FontFamily = "Georgia" FontSize = "16"/>
 
-            <Button Name="GoToComQuantityBlockButton" Grid.Row="0" Grid.Column="2" Content="Кол-во товара." Click="GoToComQuantityBlock_Click"
-            FontFamily="Georgia" FontSize="16"/>
+            <Button Name = "GoToComQuantityBlockButton" Grid.Row = "0" Grid.Column = "2" Content = "Кол-во товара." Click = "GoToComQuantityBlock_Click"
+            FontFamily = "Georgia" FontSize = "16"/>
 
-            <Button Name="GoToComPriceBlockButton" Grid.Row="0" Grid.Column="3" Content="Цена товара." Click="GoToComPriceBlock_Click"
-            FontFamily="Georgia" FontSize="16"/>
+            <Button Name = "GoToComPriceBlockButton" Grid.Row = "0" Grid.Column = "3" Content = "Цена товара." Click = "GoToComPriceBlock_Click"
+            FontFamily = "Georgia" FontSize = "16"/>
 
-            <Button Name="CommodityIsReadyButton" Grid.Row="0" Grid.Column="4" Content="Готово." Click="CommodityIsReadyButton_Click"
-            FontFamily="Georgia" FontSize="16"/>
+            <Button Name = "CommodityIsReadyButton" Grid.Row = "0" Grid.Column = "4" Content = "Готово." Click = "CommodityIsReadyButton_Click"
+            FontFamily = "Georgia" FontSize = "16"/>
 
-            <Grid Name="AddNewCommodity_ComNameBlock" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Visibility="Visible"
-            Background="White">
+            <Grid Name = "AddNewCommodity_ComNameBlock" Grid.Row = "1" Grid.Column = "0" Grid.ColumnSpan = "5" Visibility = "Visible"
+            Background = "White">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="40*"/>
-                    <RowDefinition Height="10*"/>
-                    <RowDefinition Height="50*"/>
-                    <RowDefinition Height="60*"/>
-                    <RowDefinition Height="70*"/>
-                    <RowDefinition Height="110*"/>
-                    <RowDefinition Height="50*"/>
-                    <RowDefinition Height="30*"/>
+                    <RowDefinition Height = "40*"/>
+                    <RowDefinition Height = "10*"/>
+                    <RowDefinition Height = "50*"/>
+                    <RowDefinition Height = "60*"/>
+                    <RowDefinition Height = "70*"/>
+                    <RowDefinition Height = "110*"/>
+                    <RowDefinition Height = "50*"/>
+                    <RowDefinition Height = "30*"/>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width = "30*"/>
+                    <ColumnDefinition Width = "30*"/>
+                    <ColumnDefinition Width = "30*"/>
+                    <ColumnDefinition Width = "30*"/>
+                    <ColumnDefinition Width = "30*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Name="AddNewCommodity_ComNameBlock_InputComNameDes" Text="Введите название товара." Grid.Row="2"
-                Grid.Column="1" Grid.ColumnSpan="3" FontSize="22" FontFamily="Georgia" TextAlignment="Center" 
-                VerticalAlignment="Center"/>
+                <TextBlock Name = "AddNewCommodity_ComNameBlock_InputComNameDes" Text = "Введите название товара." Grid.Row = "2"
+                Grid.Column = "1" Grid.ColumnSpan = "3" FontSize = "22" FontFamily = "Georgia" TextAlignment = "Center" 
+                VerticalAlignment = "Center"/>
 
-                <TextBox Name="AddNewCommodity_ComNameBlock_InputComNameBox" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3"
-                HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="22" FontFamily="Georgia" 
-                Style="{DynamicResource InputBoxStyle}"/>
+                <TextBox Name = "AddNewCommodity_ComNameBlock_InputComNameBox" Grid.Row = "4" Grid.Column = "1" Grid.ColumnSpan = "3"
+                HorizontalContentAlignment = "Center" VerticalContentAlignment = "Center" FontSize = "22" FontFamily = "Georgia" 
+                Style = "{DynamicResource InputBoxStyle}"/>
 
-                <Button Name="AddNewCommodity_CloseBlock" Grid.Row="6" Grid.Column="1" Content="Отмена."
-                Style="{DynamicResource AddCommodityButtonStyle}" Click="AddNewCommodity_CloseBlock_Click"/>
+                <Button Name = "AddNewCommodity_CloseBlock" Grid.Row = "6" Grid.Column = "1" Content = "Отмена."
+                Style = "{DynamicResource AddCommodityButtonStyle}" Click = "AddNewCommodity_CloseBlock_Click"/>
 
-                <Button Name="AddNewCommodity_ComNameBlock_GoToWeightBlockButton" Grid.Row="6" Grid.Column="3" Content="Продолжить."
-                Style="{DynamicResource AddCommodityButtonStyle}" Click="GoToComWeightBlock_Click"/>
+                <Button Name = "AddNewCommodity_ComNameBlock_GoToWeightBlockButton" Grid.Row = "6" Grid.Column = "3" Content = "Продолжить."
+                Style = "{DynamicResource AddCommodityButtonStyle}" Click = "GoToComWeightBlock_Click"/>
             </Grid>
 
-            <Grid Name="AddNewCommodity_ComWeightBlock" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Visibility="Hidden"
-            Background="White">
+            <Grid Name = "AddNewCommodity_ComWeightBlock" Grid.Row = "1" Grid.Column = "0" Grid.ColumnSpan = "5" Visibility = "Hidden"
+            Background = "White">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="40*"/>
-                    <RowDefinition Height="10*"/>
-                    <RowDefinition Height="50*"/>
-                    <RowDefinition Height="60*"/>
-                    <RowDefinition Height="70*"/>
-                    <RowDefinition Height="110*"/>
-                    <RowDefinition Height="50*"/>
-                    <RowDefinition Height="30*"/>
+                    <RowDefinition Height = "40*"/>
+                    <RowDefinition Height = "10*"/>
+                    <RowDefinition Height = "50*"/>
+                    <RowDefinition Height = "60*"/>
+                    <RowDefinition Height = "70*"/>
+                    <RowDefinition Height = "110*"/>
+                    <RowDefinition Height = "50*"/>
+                    <RowDefinition Height = "30*"/>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width = "30*"/>
+                    <ColumnDefinition Width = "30*"/>
+                    <ColumnDefinition Width = "30*"/>
+                    <ColumnDefinition Width = "30*"/>
+                    <ColumnDefinition Width = "30*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Name="AddNewCommodity_ComWeightBlock_InputComWeightDes" Text="Введите вес товара." Grid.Row="2" Grid.Column="1"
-                Grid.ColumnSpan="3" VerticalAlignment="Center" TextAlignment="Center" FontSize="22" FontFamily="Georgia"/>
+                <TextBlock Name = "AddNewCommodity_ComWeightBlock_InputComWeightDes" Text = "Введите вес товара." Grid.Row = "2" Grid.Column = "1"
+                Grid.ColumnSpan = "3" VerticalAlignment = "Center" TextAlignment = "Center" FontSize = "22" FontFamily = "Georgia"/>
 
-                <TextBox Name="AddNewCommodity_ComWeightBlock_InputComWeightBox" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3"
-                FontSize="16" FontFamily="Georgia" Style="{DynamicResource InputBoxStyle}"/>
+                <TextBox Name = "AddNewCommodity_ComWeightBlock_InputComWeightBox" Grid.Row = "4" Grid.Column = "1" Grid.ColumnSpan = "3"
+                FontSize = "16" FontFamily = "Georgia" Style = "{DynamicResource InputBoxStyle}"/>
 
-                <Button Name="AddNewCommodity_ComWeightBlock_GoToNameBlockButton" Content="Назад." Grid.Row="6" Grid.Column="1"
-                Style="{DynamicResource AddCommodityButtonStyle}" Click="GoToComNameBlock_Click"/>
+                <Button Name = "AddNewCommodity_ComWeightBlock_GoToNameBlockButton" Content = "Назад." Grid.Row = "6" Grid.Column = "1"
+                Style = "{DynamicResource AddCommodityButtonStyle}" Click = "GoToComNameBlock_Click"/>
 
-                <Button Name="AddNewCommodity_ComWeightBlock_GoToQuantityBlockButton" Content="Продолжить." Grid.Row="6" Grid.Column="3"
-                Style="{DynamicResource AddCommodityButtonStyle}" Click="GoToComQuantityBlock_Click"/>
+                <Button Name = "AddNewCommodity_ComWeightBlock_GoToQuantityBlockButton" Content = "Продолжить." Grid.Row = "6" Grid.Column = "3"
+                Style = "{DynamicResource AddCommodityButtonStyle}" Click = "GoToComQuantityBlock_Click"/>
             </Grid>
 
-            <Grid Name="AddNewCommodity_ComQuantityBlock" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Visibility="Hidden"
-            Background="White">
+            <Grid Name = "AddNewCommodity_ComQuantityBlock" Grid.Row = "1" Grid.Column = "0" Grid.ColumnSpan = "5" Visibility = "Hidden"
+            Background = "White">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="40*"/>
-                    <RowDefinition Height="10*"/>
-                    <RowDefinition Height="50*"/>
-                    <RowDefinition Height="60*"/>
-                    <RowDefinition Height="70*"/>
-                    <RowDefinition Height="110*"/>
-                    <RowDefinition Height="50*"/>
-                    <RowDefinition Height="30*"/>
+                    <RowDefinition Height = "40*"/>
+                    <RowDefinition Height = "10*"/>
+                    <RowDefinition Height = "50*"/>
+                    <RowDefinition Height = "60*"/>
+                    <RowDefinition Height = "70*"/>
+                    <RowDefinition Height = "110*"/>
+                    <RowDefinition Height = "50*"/>
+                    <RowDefinition Height = "30*"/>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width = "30*"/>
+                    <ColumnDefinition Width = "30*"/>
+                    <ColumnDefinition Width = "30*"/>
+                    <ColumnDefinition Width = "30*"/>
+                    <ColumnDefinition Width = "30*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Name="AddNewCommodity_ComQuantityBlock_InputComQuantityDes" Text="Введите количество товара." Grid.Row="2" Grid.Column="1"
-                Grid.ColumnSpan="3" VerticalAlignment="Center" TextAlignment="Center" FontSize="22" FontFamily="Georgia"/>
+                <TextBlock Name = "AddNewCommodity_ComQuantityBlock_InputComQuantityDes" Text = "Введите количество товара." Grid.Row = "2" Grid.Column = "1"
+                Grid.ColumnSpan = "3" VerticalAlignment = "Center" TextAlignment = "Center" FontSize = "22" FontFamily = "Georgia"/>
 
-                <TextBox Name="AddNewCommodity_ComQuantityBlock_InputComQuantityBox" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3"
-                FontSize="16" FontFamily="Georgia" Style="{DynamicResource InputBoxStyle}"/>
+                <TextBox Name = "AddNewCommodity_ComQuantityBlock_InputComQuantityBox" Grid.Row = "4" Grid.Column = "1" Grid.ColumnSpan = "3"
+                FontSize = "16" FontFamily = "Georgia" Style = "{DynamicResource InputBoxStyle}"/>
 
-                <Button Name="AddNewCommodity_ComQuantityBlock_GoToWeightBlockButton" Content="Назад." Grid.Row="6" Grid.Column="1"
-                Style="{DynamicResource AddCommodityButtonStyle}" Click="GoToComWeightBlock_Click"/>
+                <Button Name = "AddNewCommodity_ComQuantityBlock_GoToWeightBlockButton" Content = "Назад." Grid.Row = "6" Grid.Column = "1"
+                Style = "{DynamicResource AddCommodityButtonStyle}" Click = "GoToComWeightBlock_Click"/>
 
-                <Button Name="AddNewCommodity_ComQuantityBlock_GoToPriceBlockButton" Content="Продолжить." Grid.Row="6" Grid.Column="3"
-                Style="{DynamicResource AddCommodityButtonStyle}" Click="GoToComPriceBlock_Click"/>
+                <Button Name = "AddNewCommodity_ComQuantityBlock_GoToPriceBlockButton" Content = "Продолжить." Grid.Row = "6" Grid.Column = "3"
+                Style = "{DynamicResource AddCommodityButtonStyle}" Click = "GoToComPriceBlock_Click"/>
             </Grid>
 
-            <Grid Name="AddNewCommodity_ComPriceBlock" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Visibility="Hidden"
-            Background="White">
+            <Grid Name = "AddNewCommodity_ComPriceBlock" Grid.Row = "1" Grid.Column = "0" Grid.ColumnSpan = "5" Visibility = "Hidden"
+            Background = "White">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="40*"/>
-                    <RowDefinition Height="10*"/>
-                    <RowDefinition Height="50*"/>
-                    <RowDefinition Height="60*"/>
-                    <RowDefinition Height="70*"/>
-                    <RowDefinition Height="110*"/>
-                    <RowDefinition Height="50*"/>
-                    <RowDefinition Height="30*"/>
+                    <RowDefinition Height = "40*"/>
+                    <RowDefinition Height = "10*"/>
+                    <RowDefinition Height = "50*"/>
+                    <RowDefinition Height = "60*"/>
+                    <RowDefinition Height = "70*"/>
+                    <RowDefinition Height = "110*"/>
+                    <RowDefinition Height = "50*"/>
+                    <RowDefinition Height = "30*"/>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width = "30*"/>
+                    <ColumnDefinition Width = "30*"/>
+                    <ColumnDefinition Width = "30*"/>
+                    <ColumnDefinition Width = "30*"/>
+                    <ColumnDefinition Width = "30*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Name="AddNewCommodity_ComPriceBlock_InputComPriceDes" Text="Введите цену товара." Grid.Row="2" Grid.Column="1"
-                Grid.ColumnSpan="3" VerticalAlignment="Center" TextAlignment="Center" FontSize="22" FontFamily="Georgia"/>
+                <TextBlock Name = "AddNewCommodity_ComPriceBlock_InputComPriceDes" Text = "Введите цену товара." Grid.Row = "2" Grid.Column = "1"
+                Grid.ColumnSpan = "3" VerticalAlignment = "Center" TextAlignment = "Center" FontSize = "22" FontFamily = "Georgia"/>
 
-                <TextBox Name="AddNewCommodity_ComPriceBlock_InputComPriceBox" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3"
-                FontSize="16" FontFamily="Georgia" Style="{DynamicResource InputBoxStyle}"/>
+                <TextBox Name = "AddNewCommodity_ComPriceBlock_InputComPriceBox" Grid.Row = "4" Grid.Column = "1" Grid.ColumnSpan = "3"
+                FontSize = "16" FontFamily = "Georgia" Style = "{DynamicResource InputBoxStyle}"/>
 
-                <Button Name="AddNewCommodity_ComPriceBlock_GoToQuantityBlockButton" Content="Назад." Grid.Row="6" Grid.Column="1"
-                Style="{DynamicResource AddCommodityButtonStyle}" Click="GoToComQuantityBlock_Click"/>
+                <Button Name = "AddNewCommodity_ComPriceBlock_GoToQuantityBlockButton" Content = "Назад." Grid.Row = "6" Grid.Column = "1"
+                Style = "{DynamicResource AddCommodityButtonStyle}" Click = "GoToComQuantityBlock_Click"/>
 
-                <Button Name="CommodityIsReady" Content="Создать товар." Grid.Row="6" Grid.Column="3"
-                Style="{DynamicResource AddCommodityButtonStyle}" Click="CommodityIsReadyButton_Click"/>
+                <Button Name = "CommodityIsReady" Content = "Создать товар." Grid.Row = "6" Grid.Column = "3"
+                Style = "{DynamicResource AddCommodityButtonStyle}" Click = "CommodityIsReadyButton_Click"/>
             </Grid>
+        </Grid>
+
+        <Grid Name = "DeleteCommodityBlock" Grid.Row = "0" Grid.Column = "1" Grid.RowSpan = "7" Visibility = "Hidden"
+        Background = "White">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width = "10*"/>
+                <ColumnDefinition Width = "40*"/>
+                <ColumnDefinition Width = "50*"/>
+                <ColumnDefinition Width = "40*"/>
+                <ColumnDefinition Width = "10*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height = "350*"/>
+                <RowDefinition Height = "10"/>
+                <RowDefinition Height = "60*"/>
+                <RowDefinition Height = "10*"/>
+            </Grid.RowDefinitions>
+
+            <ListView Name = "SelectCommodityToDeleteView" Grid.Row = "0" Grid.Column = "0" Grid.ColumnSpan = "5" BorderThickness = "1"
+            BorderBrush = "Gray">
+                <ListView.View>
+                    <GridView x:Name = "Test">
+                        <GridView.Columns>
+                            <GridViewColumn x:Name = "DelCommodity_IdBlock" DisplayMemberBinding = "{Binding Path = Property.ID}"
+                            Header = "ID:" Width = "60"/>
+
+                            <GridViewColumn x:Name = "DelCommodity_NameBlock" DisplayMemberBinding = "{Binding Path = Property.Commodity.CommodityName}"
+                            Header = "Имя товара:" Width = "280"/>
+
+                            <GridViewColumn x:Name = "DelCommodity_QuantityBlock" DisplayMemberBinding = "{Binding Path = Property.Commodity.CommodityQuantity}"
+                            Header = "Оставшееся количество товара:" Width = "240"/>
+
+                            <GridViewColumn x:Name = "DelCommodity_CheckBlock" CellTemplate = "{StaticResource CheckCell}"
+                            Header = "Удалить?" Width = "80"/>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+
+                <ListView.ItemContainerStyle>
+                    <Style TargetType = "ListViewItem">
+                        <Setter Property = "HorizontalContentAlignment" Value = "Center"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+
+            <Button Name = "DelCommodityBlock_TurnBackButton" Grid.Row = "2" Grid.Column = "1" Content = "Отмена."
+            Style = "{DynamicResource AddCommodityButtonStyle}" Click = "DelCommodityBlock_TurnBackButton_Click"/>
+
+            <Button Name = "DelCommodityBlock_DeleteChosenButton" Grid.Row = "2" Grid.Column = "3" Content = "Удалить."
+            Style = "{DynamicResource AddCommodityButtonStyle}" Click = "DelCommodityBlock_DeleteChosenButton_Click"/>
         </Grid>
     </Grid>
 </Window>

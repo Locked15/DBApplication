@@ -7,7 +7,7 @@
         mc:Ignorable = "d" Title = "Регистрация"
         MinHeight = "300" MinWidth = "350"
         Height = "300" Width = "350"
-        Loaded="Window_Loaded"
+        Loaded ="Window_Loaded"
         Icon = "Resources/User-Add.ico">
 
     <Window.Resources>

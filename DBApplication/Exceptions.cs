@@ -112,4 +112,40 @@ namespace DBApplication
             //Еще один конструктор. Вновь нужен для работы Исключения.
         }
     }
+
+    /// <summary>
+    /// Класс, содержащий исключения.
+    /// Возникает при попытке удалить элемент по слишком большому идентификатору.
+    /// </summary>
+    public class ElementIdHasBeenTooBig : Exception
+    {
+        /// <summary>
+        /// Базовый конструктор.
+        /// </summary>
+        public ElementIdHasBeenTooBig()
+        {
+            //Базовый конструктор Исключения. Нужен для его работы.
+        }
+
+        /// <summary>
+        /// Расширенный конструктор.
+        /// </summary>
+        /// <param name="message">Сообщение, возникающее при Исключении.</param>
+        public ElementIdHasBeenTooBig(String message)
+        : base(message)
+        {
+            //Перегрузка конструктора. Нужна для работы Исключения.
+        }
+
+        /// <summary>
+        /// Продвинутый конструктор.
+        /// </summary>
+        /// <param name="message">Сообщение, возникающее при Исключении.</param>
+        /// <param name="inner">Место появления Исключения.</param>
+        public ElementIdHasBeenTooBig(String message, Exception inner)
+        : base(message, inner)
+        {
+            //Еще один конструктор. Вновь нужен для работы Исключения.
+        }
+    }
 }

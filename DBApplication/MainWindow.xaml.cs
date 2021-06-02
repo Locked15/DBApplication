@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -54,6 +55,11 @@ namespace DBApplication
         /// </summary>
         List<UserProperty> currentUserProperties = new List<UserProperty>(1);
 
+        /// <summary>
+        /// Поле, содержащее список, который содержит товары для удаления.
+        /// </summary>
+        List<PropertyToDelete> propertiesToDelete = new List<PropertyToDelete>(1);
+
         //—————————————————————————————————————————————————————————————————————————————————————————
         #endregion
 
@@ -71,9 +77,9 @@ namespace DBApplication
         }
 
         /// <summary>
-        /// Метод для сброса значений кнопок "AddCommodityButton" или "ChangeCommodityButton" до их оригинального вида.
+        /// Метод для сброса значений основных кнопок до их оригинального вида.
         /// </summary>
-        private void ResetAddOrChangeButtonState()
+        private void ResetMainButtonsState()
         {
             if (changing)
             {
@@ -83,11 +89,35 @@ namespace DBApplication
                 changing = false;
             }
 
+            else if (DeleteCommodityBlock.Visibility == Visibility.Visible)
+            {
+                DeleteCommodityButton.Background = new SolidColorBrush(Color.FromRgb(211, 211, 211));
+                DeleteCommodityButton.BorderThickness = new Thickness(1);
+            }
+
             else
             {
                 AddCommodityButton.Background = new SolidColorBrush(Color.FromRgb(211, 211, 211));
                 AddCommodityButton.BorderThickness = new Thickness(1);
             }
+        }
+
+        /// <summary>
+        /// Метод для входа в основную область программы — Область с таблицей.
+        /// </summary>
+        /// <param name="updateReferences">Необязательный параметр. Отвечает за то, что при входе будет обновлен источник данных Главной Таблицы.</param>
+        private void EnterIntoMainBlock(Bool updateReferences = false)
+        {
+            MainDataBaseBlock.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>
+        /// Метод для обновления источника данных у Главной Таблицы.
+        /// </summary>
+        private void UpdateItemSource()
+        {
+            Sheet.ItemsSource = null;
+            Sheet.ItemsSource = currentUserProperties;
         }
 
         //—————————————————————————————————————————————————————————————————————————————————————————
@@ -158,7 +188,17 @@ namespace DBApplication
         /// <param name="e">Аргументы события.</param>
         private void DeleteCommodityButton_Click(object sender, RoutedEventArgs e)
         {
+            propertiesToDelete = new List<PropertyToDelete>(1);
 
+            foreach (UserProperty property in currentUserProperties)
+            {
+                propertiesToDelete.Add(new PropertyToDelete(property, false));
+            }
+
+            SelectCommodityToDeleteView.ItemsSource = propertiesToDelete;
+
+            MainDataBaseBlock.Visibility = Visibility.Hidden;
+            DeleteCommodityBlock.Visibility = Visibility.Visible;
         }
 
         /// <summary>
@@ -170,7 +210,7 @@ namespace DBApplication
         {
             currentUserProperties = DataBaseWork.ReadCommoditiesTable(currentUser.Name);
 
-            Sheet.ItemsSource = currentUserProperties;
+            UpdateItemSource();
         }
 
         //—————————————————————————————————————————————————————————————————————————————————————————
@@ -397,13 +437,12 @@ namespace DBApplication
 
                 ResetTextInAllBlocks();
 
-                Sheet.ItemsSource = null;
-                Sheet.ItemsSource = currentUserProperties;
+                UpdateItemSource();
 
                 AddNewCommodityBlock.Visibility = Visibility.Hidden;
-                MainDataBaseBlock.Visibility = Visibility.Visible;
+                EnterIntoMainBlock();
 
-                ResetAddOrChangeButtonState();
+                ResetMainButtonsState();
             }
 
             //Область замены старого товара.
@@ -413,15 +452,14 @@ namespace DBApplication
                 new Commodity(AddNewCommodity_ComNameBlock_InputComNameBox.Text, commodityWeight, commodityPrice, commodityQuantity), 
                 currentUser.Name);
 
-                Sheet.ItemsSource = null;
-                Sheet.ItemsSource = currentUserProperties;
+                UpdateItemSource();
                 
                 ResetTextInAllBlocks();
 
                 AddNewCommodityBlock.Visibility = Visibility.Hidden;
-                MainDataBaseBlock.Visibility = Visibility.Visible;
+                EnterIntoMainBlock();
 
-                ResetAddOrChangeButtonState();
+                ResetMainButtonsState();
             }
 
             //Область сообщений, которые будут появляться, если пользователь ввел что-то неправильно.
@@ -457,19 +495,18 @@ namespace DBApplication
             ResetTextInAllBlocks();
 
             AddNewCommodityBlock.Visibility = Visibility.Hidden;
-
-            MainDataBaseBlock.Visibility = Visibility.Visible;
+            EnterIntoMainBlock();
 
             if (changing)
             {
-                ResetAddOrChangeButtonState();
+                ResetMainButtonsState();
 
                 lastMainButton = null;
             }
 
             else
             {
-                ResetAddOrChangeButtonState();
+                ResetMainButtonsState();
 
                 lastMainButton = null;
             }
@@ -546,6 +583,70 @@ namespace DBApplication
         //—————————————————————————————————————————————————————————————————————————————————————————
         #endregion
 
+        #region Область удаления товара.
+        //—————————————————————————————————————————————————————————————————————————————————————————
+
+        #region Основные события.
+        //—————————————————————————————————————————————————————————————————————————————————————————
+
+        /// <summary>
+        /// Событие, возникающее при нажатии на кнопку "DelCommodityBlock_TurnBackButton".
+        /// Нужно для отмены операции удаления и возврата к обычной таблице.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавший событие.</param>
+        /// <param name="e">Аргументы события.</param>
+        private void DelCommodityBlock_TurnBackButton_Click(object sender, RoutedEventArgs e)
+        {
+            ResetMainButtonsState();
+
+            DeleteCommodityBlock.Visibility = Visibility.Hidden;
+            EnterIntoMainBlock();
+        }
+
+        /// <summary>
+        /// Событие, возникающее при нажатии на кнопку "DelCommodityBlock_DeleteChosenButton".
+        /// Проверяет выбранные строки в таблице и отправляет запрос в Базу Данных на удаление.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавший событие.</param>
+        /// <param name="e">Аргументы события.</param>
+        private void DelCommodityBlock_DeleteChosenButton_Click(object sender, RoutedEventArgs e)
+        {
+            propertiesToDelete = propertiesToDelete.Where(x => x.Del == true).ToList();
+
+            if (propertiesToDelete.Count > 0)
+            {
+                foreach (PropertyToDelete property in propertiesToDelete)
+                {
+                    try
+                    {
+                        DataBaseWork.DeleteCommodityFromTable(property.Property.ID);
+
+                        currentUserProperties.Remove(property.Property);
+                    }
+
+                    catch (ElementIdHasBeenTooBig)
+                    {
+                        MessageBox.Show("В процессе выполнения была обнаружена ошибка.", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+
+                UpdateItemSource();
+
+                DelCommodityBlock_TurnBackButton_Click(sender, e);
+            }
+
+            else
+            {
+                MessageBox.Show("Товары для удаления не выбраны.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
+
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
+
         //—————————————————————————————————————————————————————————————————————————————————————————
         #endregion
 
@@ -605,9 +706,94 @@ namespace DBApplication
         /// <param name="e">Аргументы события.</param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            EnterIntoMainBlock();
+
             currentUserProperties = DataBaseWork.ReadCommoditiesTable(currentUser.Name);
 
             Sheet.ItemsSource = currentUserProperties;
+        }
+
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
+
+        #region Внутренний класс для Удаления.
+        //—————————————————————————————————————————————————————————————————————————————————————————
+
+        /// <summary>
+        /// Внутренний класс, предоставляющий поля, нужные для удаления товара.
+        /// </summary>
+        private class PropertyToDelete
+        {
+            #region Поля класса.
+            //—————————————————————————————————————————————————————————————————————————————————————————
+
+            /// <summary>
+            /// Поле, содержащее товар, принадлежащий какому-либо пользователю.
+            /// </summary>
+            UserProperty property;
+
+            /// <summary>
+            /// Поле, отвечающее за то, будет ли удаляться товар.
+            /// </summary>
+            Bool del;
+
+            //—————————————————————————————————————————————————————————————————————————————————————————
+            #endregion
+
+            #region Свойства класса.
+            //—————————————————————————————————————————————————————————————————————————————————————————
+
+            /// <summary>
+            /// Свойство, содержащее товар, принадлежащий какому-либо пользователю.
+            /// </summary>
+            public UserProperty Property
+            {
+                get
+                {
+                    return property;
+                }
+
+                set
+                {
+                    property = value;
+                }
+            }
+
+            /// <summary>
+            /// Свойство, отвечающее за то, будет ли удаляться товар.
+            /// </summary>
+            public Bool Del
+            {
+                get
+                {
+                    return del;
+                }
+
+                set
+                {
+                    del = value;
+                }
+            }
+
+            //—————————————————————————————————————————————————————————————————————————————————————————
+            #endregion
+
+            #region Методы класса.
+            //—————————————————————————————————————————————————————————————————————————————————————————
+
+            /// <summary>
+            /// Конструктор класса.
+            /// </summary>
+            /// <param name="property">Товар, который необходимо добавить в список для будущей привязки данных.</param>
+            /// <param name="del">Свойство, отвечающее за то, будет ли товар удаляться.</param>>
+            public PropertyToDelete(UserProperty property, Bool del)
+            {
+                Property = property;
+                Del = del;
+            }
+
+            //—————————————————————————————————————————————————————————————————————————————————————————
+            #endregion
         }
 
         //—————————————————————————————————————————————————————————————————————————————————————————

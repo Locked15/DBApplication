@@ -45,6 +45,9 @@ namespace DBApplication
         #region Методы класса.
         //—————————————————————————————————————————————————————————————————————————————————————————
 
+        #region Конструктор.
+        //—————————————————————————————————————————————————————————————————————————————————————————
+
         /// <summary>
         /// Статический конструктор класса. Инициализирует поле подключения к Базе Данных и обновляет список активных пользователей.
         /// </summary>
@@ -54,6 +57,12 @@ namespace DBApplication
 
             initialized = true;
         }
+
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
+
+        #region Работа с Пользователями.
+        //—————————————————————————————————————————————————————————————————————————————————————————
 
         /// <summary>
         /// Метод для внесения пользователя в Базу Данных.
@@ -145,121 +154,6 @@ namespace DBApplication
         }
 
         /// <summary>
-        /// Метод для добавления Товара (экземпляр "Commodity") в Базу Данных.
-        /// </summary>
-        /// <param name="commodityToAdd">Товар, который нужно добавить в Базу Данных.</param>
-        /// <param name="ownerName">Имя пользователя, которому принадлежит товар.</param>
-        /// <return>Экземпляр класса "UserProperty", который был добавлен в Базу Данных.</return>
-        public static UserProperty WriteCommodityTable(Commodity commodityToAdd, String ownerName)
-        {
-            connectToDB.Open();
-
-            command =  new SqlCommand("INSERT INTO CommodityTable(CommodityName, CommodityWeight, CommodityPrice, CommodityQuantity, Owner) " +
-            "VALUES(@comName, @comWeight, @comPrice, @comQuantity, @comOwner)", connectToDB);
-            command.Parameters.AddWithValue("@comName", commodityToAdd.CommodityName);
-            command.Parameters.AddWithValue("@comWeight", commodityToAdd.CommodityWeight);
-            command.Parameters.AddWithValue("@comPrice", commodityToAdd.CommodityPrice);
-            command.Parameters.AddWithValue("@comQuantity", commodityToAdd.CommodityQuantity);
-            command.Parameters.AddWithValue("@comOwner", ownerName);
-
-            SqlDataReader reader = command.ExecuteReader();
-            readResult.Load(reader);
-
-            connectToDB.Close();
-
-            UserProperty toReturn = new UserProperty(GetLastCommodityId(), commodityToAdd, ownerName);
-
-            return toReturn;
-        }
-
-        /// <summary>
-        /// Метод для замены значения определенного элемента таблицы на новое.
-        /// </summary>
-        /// <param name="id">ID заменяемого значения.</param>
-        /// <param name="newCommodity">Новый товар, который заменит старый.</param>
-        /// <param name="ownerName">Имя владельца товара.</param>
-        /// <returns>Экземпляр класса "UserProperty".</returns>
-        public static UserProperty ChangeCommodityInTable(Int32 id, Commodity newCommodity, String ownerName)
-        {
-            connectToDB.Open();
-
-            command = new SqlCommand("UPDATE CommodityTable SET CommodityPrice = @newPrice, " +
-            "CommodityQuantity = @newQuantity WHERE Id = @changingID", connectToDB);
-            command.Parameters.AddWithValue("@newPrice", newCommodity.CommodityPrice);
-            command.Parameters.AddWithValue("@newQuantity", newCommodity.CommodityQuantity);
-            command.Parameters.AddWithValue("@changingID", id + 1);
-
-            command.ExecuteNonQuery();
-
-            connectToDB.Close();
-
-            UserProperty toReturn = new UserProperty(id + 1, newCommodity, ownerName);
-
-            return toReturn;
-        }
-
-        /// <summary>
-        /// Метод для получения индекса последнего элемента в таблице с Товарами.
-        /// </summary>
-        /// <returns>Индекс последнего элемента.</returns>
-        public static Int32 GetLastCommodityId()
-        {
-            connectToDB.Open();
-
-            command = new SqlCommand("SELECT MAX(Id) FROM CommodityTable", connectToDB);
-
-            SqlDataReader reader = command.ExecuteReader();
-            reader.Read();
-
-            Int32 toReturn = reader.GetInt32(0);
-
-            connectToDB.Close();
-            return toReturn;
-        }
-
-        /// <summary>
-        /// Метод для получения товаров пользователя из Базы Данных.
-        /// </summary>
-        /// <param name="userName">Имя пользователя, чьи товары необходимо найти.</param>
-        /// <return>Список, содержащий значения, пригодные для добавления в таблицу.</return>>
-        public static List<UserProperty> ReadCommoditiesTable(String userName)
-        {
-            List<UserProperty> listToReturn = new List<UserProperty>(1);
-
-            if (initialized)
-            {
-                connectToDB.Open();
-
-                command = new SqlCommand("SELECT * FROM CommodityTable WHERE Owner = @user AND Deleted = @del", connectToDB);
-                command.Parameters.AddWithValue("@user", userName);
-                command.Parameters.AddWithValue("@del", 0);
-
-                SqlDataReader reader = command.ExecuteReader();
-                
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        listToReturn.Add(new UserProperty(Convert.ToInt32(reader.GetValue(0)), 
-                        new Commodity(reader.GetValue(1) as String, Convert.ToDecimal(reader.GetValue(2)), 
-                        Convert.ToDecimal(reader.GetValue(3)), Convert.ToInt32(reader.GetValue(4))), reader.GetString(5)));
-                    }
-                }
-
-                connectToDB.Close();
-
-                return listToReturn;
-            }
-
-            else
-            {
-                MessageBox.Show("Обнаружена попытка обращения к Базе Данных до инициализации.", "Внимание!", MessageBoxButton.OK, MessageBoxImage.Warning);
-
-                return null;
-            }
-        }
-
-        /// <summary>
         /// Метод для проверки Базы Данных на существование аккаунта с таким именем.
         /// </summary>
         /// <param name="userName">Имя пользователя для проверки.</param>
@@ -296,6 +190,155 @@ namespace DBApplication
                 return false;
             }
         }
+
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
+
+        #region Работа с Товарами.
+        //—————————————————————————————————————————————————————————————————————————————————————————
+
+        /// <summary>
+        /// Метод для добавления Товара (экземпляр "Commodity") в Базу Данных.
+        /// </summary>
+        /// <param name="commodityToAdd">Товар, который нужно добавить в Базу Данных.</param>
+        /// <param name="ownerName">Имя пользователя, которому принадлежит товар.</param>
+        /// <return>Экземпляр класса "UserProperty", который был добавлен в Базу Данных.</return>
+        public static UserProperty WriteCommodityTable(Commodity commodityToAdd, String ownerName)
+        {
+            connectToDB.Open();
+
+            command = new SqlCommand("INSERT INTO CommodityTable(CommodityName, CommodityWeight, CommodityPrice, CommodityQuantity, Owner) " +
+            "VALUES(@comName, @comWeight, @comPrice, @comQuantity, @comOwner)", connectToDB);
+            command.Parameters.AddWithValue("@comName", commodityToAdd.CommodityName);
+            command.Parameters.AddWithValue("@comWeight", commodityToAdd.CommodityWeight);
+            command.Parameters.AddWithValue("@comPrice", commodityToAdd.CommodityPrice);
+            command.Parameters.AddWithValue("@comQuantity", commodityToAdd.CommodityQuantity);
+            command.Parameters.AddWithValue("@comOwner", ownerName);
+
+            SqlDataReader reader = command.ExecuteReader();
+            readResult.Load(reader);
+
+            connectToDB.Close();
+
+            UserProperty toReturn = new UserProperty(GetLastCommodityId(), commodityToAdd, ownerName);
+
+            return toReturn;
+        }
+
+        /// <summary>
+        /// Метод для получения товаров пользователя из Базы Данных.
+        /// </summary>
+        /// <param name="userName">Имя пользователя, чьи товары необходимо найти.</param>
+        /// <return>Список, содержащий значения, пригодные для добавления в таблицу.</return>>
+        public static List<UserProperty> ReadCommoditiesTable(String userName)
+        {
+            List<UserProperty> listToReturn = new List<UserProperty>(1);
+
+            if (initialized)
+            {
+                connectToDB.Open();
+
+                command = new SqlCommand("SELECT * FROM CommodityTable WHERE Owner = @user AND Deleted = @del", connectToDB);
+                command.Parameters.AddWithValue("@user", userName);
+                command.Parameters.AddWithValue("@del", 0);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        listToReturn.Add(new UserProperty(Convert.ToInt32(reader.GetValue(0)),
+                        new Commodity(reader.GetValue(1) as String, Convert.ToDecimal(reader.GetValue(2)),
+                        Convert.ToDecimal(reader.GetValue(3)), Convert.ToInt32(reader.GetValue(4))), reader.GetString(5)));
+                    }
+                }
+
+                connectToDB.Close();
+
+                return listToReturn;
+            }
+
+            else
+            {
+                MessageBox.Show("Обнаружена попытка обращения к Базе Данных до инициализации.", "Внимание!", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Метод для замены значения определенного элемента таблицы на новое.
+        /// </summary>
+        /// <param name="id">ID заменяемого значения.</param>
+        /// <param name="newCommodity">Новый товар, который заменит старый.</param>
+        /// <param name="ownerName">Имя владельца товара.</param>
+        /// <returns>Экземпляр класса "UserProperty".</returns>
+        public static UserProperty ChangeCommodityInTable(Int32 id, Commodity newCommodity, String ownerName)
+        {
+            connectToDB.Open();
+
+            command = new SqlCommand("UPDATE CommodityTable SET CommodityPrice = @newPrice, " +
+            "CommodityQuantity = @newQuantity WHERE Id = @changingID", connectToDB);
+            command.Parameters.AddWithValue("@newPrice", newCommodity.CommodityPrice);
+            command.Parameters.AddWithValue("@newQuantity", newCommodity.CommodityQuantity);
+            command.Parameters.AddWithValue("@changingID", id + 1);
+
+            command.ExecuteNonQuery();
+
+            connectToDB.Close();
+
+            UserProperty toReturn = new UserProperty(id + 1, newCommodity, ownerName);
+
+            return toReturn;
+        }
+
+        /// <summary>
+        /// Метод для удаления элемента из Базы Данных.
+        /// </summary>
+        /// <param name="id">Идентификатор, по которому элемент будет удален.</param>
+        public static void DeleteCommodityFromTable(Int32 id)
+        {
+            if (id <= GetLastCommodityId())
+            {
+                connectToDB.Open();
+
+                command = new SqlCommand("UPDATE CommodityTable SET Deleted = @del WHERE Id = @comId", connectToDB);
+                command.Parameters.AddWithValue("@del", 1);
+                command.Parameters.AddWithValue("@comId", id);
+
+                command.ExecuteNonQuery();
+
+                connectToDB.Close();
+            }
+
+            else
+            {
+                throw new ElementIdHasBeenTooBig("Попытка удаления элемента по несуществующему идентификатору.");
+            }
+        }
+
+        /// <summary>
+        /// Метод для получения индекса последнего элемента в таблице с Товарами.
+        /// </summary>
+        /// <returns>Индекс последнего элемента.</returns>
+        public static Int32 GetLastCommodityId()
+        {
+            connectToDB.Open();
+
+            command = new SqlCommand("SELECT MAX(Id) FROM CommodityTable", connectToDB);
+
+            SqlDataReader reader = command.ExecuteReader();
+            reader.Read();
+
+            Int32 toReturn = reader.GetInt32(0);
+
+            connectToDB.Close();
+            return toReturn;
+        }
+
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
 
         //—————————————————————————————————————————————————————————————————————————————————————————
         #endregion
