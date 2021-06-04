@@ -2,7 +2,6 @@
 using System.Data;
 using System.Windows;
 using System.Data.SqlClient;
-using System.Windows.Controls;
 using System.Collections.Generic;
 using Bool = System.Boolean;
 
@@ -18,11 +17,6 @@ namespace DBApplication
     {
         #region Поля класса.
         //—————————————————————————————————————————————————————————————————————————————————————————
-
-        /// <summary>
-        /// Поле, отвечающее за то, были ли инициализированы поля для подключения к Базе Данных.
-        /// </summary>
-        static Bool initialized;
 
         /// <summary>
         /// Поле, содержащее команду для выполнения.
@@ -54,8 +48,25 @@ namespace DBApplication
         static DataBaseWork()
         {
             connectToDB = new SqlConnection(Other.ConnectionString);
+        }
 
-            initialized = true;
+        /// <summary>
+        /// Метод для преобразования значений, полученных в Базе Данных в их корректный вид.
+        /// </summary>
+        /// <param name="id">Объектное представление Идентификатора товара.</param>
+        /// <param name="commodityName">Объектное представление Имени товара.</param>
+        /// <param name="commodityWeight">Объектное представление Веса товара.</param>
+        /// <param name="commodityPrice">Объектное представление Стоимости товара.</param>
+        /// <param name="commodityQuantity">Объектное представление Количества товара.</param>
+        /// <param name="commodityOwner">Объектное представление Имени Владельца товара.</param>
+        /// <returns>Экземпляр класса UserProperty, созданных по преобразованным параметрам.</returns>
+        private static UserProperty ConvertValuesToProperty(Object id, Object commodityName, Object commodityWeight,
+        Object commodityPrice, Object commodityQuantity, Object commodityOwner)
+        {
+            //Значения: ID -> Имя товара -> Вес товара -> Стоимость товара -> Количество товара -> Имя владельца.
+
+            return new UserProperty(Convert.ToInt32(id), new Commodity(commodityName as String, Convert.ToDecimal(commodityWeight),
+            Convert.ToDecimal(commodityPrice), Convert.ToInt32(commodityQuantity)), commodityOwner as String);
         }
 
         //—————————————————————————————————————————————————————————————————————————————————————————
@@ -71,39 +82,29 @@ namespace DBApplication
         /// <returns>Логическое значение, отвечающее за успех добавления пользователя в Базу Данных.</returns>
         public static Bool WriteNewUserInTable(User user)
         {
-            if (initialized)
+            if (CheckUserExistance(user.Name))
             {
-                if (CheckUserExistance(user.Name))
-                {
-                    MessageBox.Show("Пользователь с таким именем уже существует в системе.", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Пользователь с таким именем уже существует в системе.", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
 
-                    connectToDB.Close();
+                connectToDB.Close();
 
-                    return false;
-                }
-
-                else
-                {
-                    command = new SqlCommand("INSERT INTO UserTable(UserName, UserPassword, Gender, BirthDate) " +
-                    "VALUES(@uName, @uPass, @uGender, @uBirth)", connectToDB);
-                    command.Parameters.AddWithValue("@uName", user.Name);
-                    command.Parameters.AddWithValue("@uPass", user.Password);
-                    command.Parameters.AddWithValue("@uGender", user.UserGender.GetStringFromGender());
-                    command.Parameters.AddWithValue("@uBirth", user.BirthDate);
-
-                    command.ExecuteNonQuery();
-
-                    connectToDB.Close();
-
-                    return true;
-                }
+                return false;
             }
 
             else
             {
-                MessageBox.Show("Обнаружена попытка обращения к Базе Данных до инициализации.", "Внимание!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                command = new SqlCommand("INSERT INTO UserTable(UserName, UserPassword, Gender, BirthDate) " +
+                "VALUES(@uName, @uPass, @uGender, @uBirth)", connectToDB);
+                command.Parameters.AddWithValue("@uName", user.Name);
+                command.Parameters.AddWithValue("@uPass", user.Password);
+                command.Parameters.AddWithValue("@uGender", user.UserGender.GetStringFromGender());
+                command.Parameters.AddWithValue("@uBirth", user.BirthDate);
 
-                return false;
+                command.ExecuteNonQuery();
+
+                connectToDB.Close();
+
+                return true;
             }
         }
 
@@ -115,41 +116,31 @@ namespace DBApplication
         /// <returns>Экземпляр класса "User". Если аккаунт не найден, будет выброшено Исключение.</returns>
         public static User ReadUserTable(String name, String password)
         {
-            if (initialized)
+            connectToDB.Open();
+
+            command = new SqlCommand($"SELECT * FROM UserTable WHERE UserName = @userName AND UserPassword = @userPassword", connectToDB);
+            command.Parameters.AddWithValue("@userName", name);
+            command.Parameters.AddWithValue("@userPassword", password);
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            if (reader.HasRows && reader.Read())
             {
-                connectToDB.Open();
+                String userName = reader.GetString(1);
+                String userPassword = reader.GetString(2);
+                Gender userGen = reader.GetValue(3).GetGenderFromString();
+                DateTime userBirth = (DateTime)reader.GetValue(4);
 
-                command = new SqlCommand($"SELECT * FROM UserTable WHERE UserName = @userName AND UserPassword = @userPassword", connectToDB);
-                command.Parameters.AddWithValue("@userName", name);
-                command.Parameters.AddWithValue("@userPassword", password);
+                connectToDB.Close();
 
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.HasRows && reader.Read())
-                {
-                    String userName = reader.GetString(1);
-                    String userPassword = reader.GetString(2);
-                    Gender userGen = reader.GetValue(3).GetGenderFromString();
-                    DateTime userBirth = (DateTime)reader.GetValue(4);
-
-                    connectToDB.Close();
-
-                    return new User(userName, userPassword, userGen, userBirth);
-                }
-
-                else
-                {
-                    connectToDB.Close();
-
-                    throw new UserNotFoundException("Указанный аккаунт не найден.");
-                }
+                return new User(userName, userPassword, userGen, userBirth);
             }
 
             else
             {
-                MessageBox.Show("Обнаружена попытка обращения к Базе Данных до инициализации.", "Внимание!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                connectToDB.Close();
 
-                return null;
+                throw new UserNotFoundException("Указанный аккаунт не найден.");
             }
         }
 
@@ -162,33 +153,23 @@ namespace DBApplication
         /// <returns>Переменная, отвечающая за существование такого пользователя в системе.</returns>
         private static Bool CheckUserExistance(String userName, Bool close = false)
         {
-            if (initialized)
+            connectToDB.Open();
+
+            command = new SqlCommand("SELECT * FROM UserTable WHERE UserName = @uName", connectToDB);
+            command.Parameters.AddWithValue("@uName", userName);
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            if (close)
             {
-                connectToDB.Open();
-
-                command = new SqlCommand("SELECT * FROM UserTable WHERE UserName = @uName", connectToDB);
-                command.Parameters.AddWithValue("@uName", userName);
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (close)
-                {
-                    connectToDB.Close();
-                }
-
-                Bool hasRows = reader.HasRows;
-
-                reader.Close();
-
-                return hasRows;
+                connectToDB.Close();
             }
 
-            else
-            {
-                MessageBox.Show("Обнаружена попытка обращения к Базе Данных до инициализации.", "Внимание!", MessageBoxButton.OK, MessageBoxImage.Warning);
+            Bool hasRows = reader.HasRows;
 
-                return false;
-            }
+            reader.Close();
+
+            return hasRows;
         }
 
         //—————————————————————————————————————————————————————————————————————————————————————————
@@ -234,37 +215,23 @@ namespace DBApplication
         {
             List<UserProperty> listToReturn = new List<UserProperty>(1);
 
-            if (initialized)
+            connectToDB.Open();
+
+            command = new SqlCommand("SELECT * FROM CommodityTable WHERE Owner = @user AND Deleted = @del", connectToDB);
+            command.Parameters.AddWithValue("@user", userName);
+            command.Parameters.AddWithValue("@del", 0);
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read() && reader.HasRows)
             {
-                connectToDB.Open();
-
-                command = new SqlCommand("SELECT * FROM CommodityTable WHERE Owner = @user AND Deleted = @del", connectToDB);
-                command.Parameters.AddWithValue("@user", userName);
-                command.Parameters.AddWithValue("@del", 0);
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        listToReturn.Add(new UserProperty(Convert.ToInt32(reader.GetValue(0)),
-                        new Commodity(reader.GetValue(1) as String, Convert.ToDecimal(reader.GetValue(2)),
-                        Convert.ToDecimal(reader.GetValue(3)), Convert.ToInt32(reader.GetValue(4))), reader.GetString(5)));
-                    }
-                }
-
-                connectToDB.Close();
-
-                return listToReturn;
+                listToReturn.Add(ConvertValuesToProperty(reader.GetValue(0), reader.GetValue(1), 
+                reader.GetValue(2), reader.GetValue(3), reader.GetValue(4), reader.GetValue(5)));
             }
 
-            else
-            {
-                MessageBox.Show("Обнаружена попытка обращения к Базе Данных до инициализации.", "Внимание!", MessageBoxButton.OK, MessageBoxImage.Warning);
+            connectToDB.Close();
 
-                return null;
-            }
+            return listToReturn;
         }
 
         /// <summary>
@@ -316,6 +283,56 @@ namespace DBApplication
             {
                 throw new ElementIdHasBeenTooBig("Попытка удаления элемента по несуществующему идентификатору.");
             }
+        }
+
+        /// <summary>
+        /// Метод для чтения удаленных записей о товарах в Базе Данных.
+        /// </summary>
+        /// <param name="userName">Имя пользователя, товары которого будут считываться.</param>
+        /// <returns>Список с товарами, которые были удалены.</returns>
+        public static List<UserProperty> ReadDeletedCommodities(String userName)
+        {
+            List<UserProperty> listToReturn = new List<UserProperty>(1);
+
+            connectToDB.Open();
+
+            command = new SqlCommand("SELECT * FROM CommodityTable WHERE Deleted = @del AND Owner = @own", connectToDB);
+            command.Parameters.AddWithValue("@del", 1);
+            command.Parameters.AddWithValue("@own", userName);
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read() && reader.HasRows)
+            {
+                listToReturn.Add(ConvertValuesToProperty(reader.GetValue(0), reader.GetValue(1),
+                reader.GetValue(2), reader.GetValue(3), reader.GetValue(4), reader.GetValue(5)));
+            }
+
+            connectToDB.Close();
+
+            return listToReturn;
+        }
+
+        /// <summary>
+        /// Метод для восстановления удаленного товара из таблицы Базы Данных. 
+        /// </summary>
+        /// <param name="id">Идентификатор товара, который необходимо восстановить.</param>
+        /// <param name="commodityToRestore">Товар, который необходимо восстановить.</param>
+        /// <param name="ownerName">Имя владельца товара.</param>
+        /// <returns>Экземпляр класса UserProperty для привязки данных.</returns>
+        public static UserProperty RestoreCommodityFromTable(Int32 id, Commodity commodityToRestore, String ownerName)
+        {
+            connectToDB.Open();
+
+            command = new SqlCommand("UPDATE CommodityTable SET Deleted = @newDel WHERE Id = @index", connectToDB);
+            command.Parameters.AddWithValue("@newDel", 0);
+            command.Parameters.AddWithValue("@index", id);
+
+            command.ExecuteNonQuery();
+
+            connectToDB.Close();
+
+            return new UserProperty(id, commodityToRestore, ownerName);
         }
 
         /// <summary>

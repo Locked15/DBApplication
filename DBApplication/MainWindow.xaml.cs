@@ -13,12 +13,17 @@ using Bool = System.Boolean;
 namespace DBApplication
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Логика взаимодействия для MainWindow.xaml.
     /// </summary>
     public partial class MainWindow : Window
     {
         #region Поля класса.
         //—————————————————————————————————————————————————————————————————————————————————————————
+
+        /// <summary>
+        /// Поле, отвечающее за то, что сейчас происходит восстановление товара, а не его удаление.
+        /// </summary>
+        Bool restoring;
 
         /// <summary>
         /// Поле, отвечающее за то, что сейчас происходит замена товара, а не его создание.
@@ -56,9 +61,9 @@ namespace DBApplication
         List<UserProperty> currentUserProperties = new List<UserProperty>(1);
 
         /// <summary>
-        /// Поле, содержащее список, который содержит товары для удаления.
+        /// Поле, содержащее список, который содержит товары. Нужен для работы в блоке Удаления (Восстановление/Удаление товаров).
         /// </summary>
-        List<PropertyToDelete> propertiesToDelete = new List<PropertyToDelete>(1);
+        List<PropertyToDelete> propertiesOfDeleteBlock = new List<PropertyToDelete>(1);
 
         //—————————————————————————————————————————————————————————————————————————————————————————
         #endregion
@@ -91,8 +96,17 @@ namespace DBApplication
 
             else if (DeleteCommodityBlock.Visibility == Visibility.Visible)
             {
-                DeleteCommodityButton.Background = new SolidColorBrush(Color.FromRgb(211, 211, 211));
-                DeleteCommodityButton.BorderThickness = new Thickness(1);
+                if (restoring)
+                {
+                    DeletedCommodititesButton.Background = new SolidColorBrush(Color.FromRgb(211, 211, 211));
+                    DeletedCommodititesButton.BorderThickness = new Thickness(1);
+                }
+
+                else
+                {
+                    DeleteCommodityButton.Background = new SolidColorBrush(Color.FromRgb(211, 211, 211));
+                    DeleteCommodityButton.BorderThickness = new Thickness(1);
+                }
             }
 
             else
@@ -109,6 +123,27 @@ namespace DBApplication
         private void EnterIntoMainBlock(Bool updateReferences = false)
         {
             MainDataBaseBlock.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>
+        /// Метод для подготовки области с Удалением товара.
+        /// </summary>
+        private void InitializeDeleteBlock()
+        {
+            if (restoring)
+            {
+                DelCommodity_CheckBlock.Header = "Восстановить?";
+                DelCommodityBlock_DeleteChosenButton.Content = "Восстановить.";
+            }
+
+            else
+            {
+                DelCommodity_CheckBlock.Header = "Удалить?";
+                DelCommodityBlock_DeleteChosenButton.Content = "Удалить.";
+            }
+
+            MainDataBaseBlock.Visibility = Visibility.Hidden;
+            DeleteCommodityBlock.Visibility = Visibility.Visible;
         }
 
         /// <summary>
@@ -138,18 +173,19 @@ namespace DBApplication
         {
             if (changing)
             {
-                Int32? hasIndex = Sheet.SelectedIndex;
+                Int32 hasIndex = Sheet.SelectedIndex;
 
-                if (!hasIndex.HasValue)
+                if (hasIndex == -1)
                 {
                     MessageBox.Show("Предмет для замены не выбран.", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    ResetMainButtonsState();
 
                     changing = false;
 
                     return;
                 }
 
-                changingID = hasIndex.Value;
+                changingID = hasIndex;
             }
 
             MainDataBaseBlock.Visibility = Visibility.Hidden;
@@ -188,17 +224,30 @@ namespace DBApplication
         /// <param name="e">Аргументы события.</param>
         private void DeleteCommodityButton_Click(object sender, RoutedEventArgs e)
         {
-            propertiesToDelete = new List<PropertyToDelete>(1);
+            restoring = false;
+            propertiesOfDeleteBlock = new List<PropertyToDelete>(1);
 
             foreach (UserProperty property in currentUserProperties)
             {
-                propertiesToDelete.Add(new PropertyToDelete(property, false));
+                propertiesOfDeleteBlock.Add(new PropertyToDelete(property, false));
             }
 
-            SelectCommodityToDeleteView.ItemsSource = propertiesToDelete;
+            SelectCommodityToDeleteView.ItemsSource = propertiesOfDeleteBlock;
 
-            MainDataBaseBlock.Visibility = Visibility.Hidden;
-            DeleteCommodityBlock.Visibility = Visibility.Visible;
+            InitializeDeleteBlock();
+        }
+
+        /// <summary>
+        /// Событие, возникающее при нажатии на кнопку "DeletedCommodititesButton_Click".
+        /// Нужно для отображения блока восстановления удаленных товаров.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавший событие.</param>
+        /// <param name="e">Аргументы события.</param>
+        private void DeletedCommodititesButton_Click(object sender, RoutedEventArgs e)
+        {
+            InitializeRestoring();
+
+            InitializeDeleteBlock();
         }
 
         /// <summary>
@@ -432,7 +481,7 @@ namespace DBApplication
             //Область добавления нового товара.
             if (nameIsCorrect && weightIsCorrect && quantityIsCorrect && priceIsCorrect && !changing)
             {
-                currentUserProperties.Add(DataBaseWork.WriteCommodityTable(new Commodity(AddNewCommodity_ComNameBlock_InputComNameBox.Text, 
+                currentUserProperties.Add(DataBaseWork.WriteCommodityTable(new Commodity(AddNewCommodity_ComNameBlock_InputComNameBox.Text,
                 commodityWeight, commodityPrice, commodityQuantity), currentUser.Name));
 
                 ResetTextInAllBlocks();
@@ -449,11 +498,11 @@ namespace DBApplication
             else if (nameIsCorrect && weightIsCorrect && quantityIsCorrect && priceIsCorrect)
             {
                 currentUserProperties[changingID] = DataBaseWork.ChangeCommodityInTable(changingID,
-                new Commodity(AddNewCommodity_ComNameBlock_InputComNameBox.Text, commodityWeight, commodityPrice, commodityQuantity), 
+                new Commodity(AddNewCommodity_ComNameBlock_InputComNameBox.Text, commodityWeight, commodityPrice, commodityQuantity),
                 currentUser.Name);
 
                 UpdateItemSource();
-                
+
                 ResetTextInAllBlocks();
 
                 AddNewCommodityBlock.Visibility = Visibility.Hidden;
@@ -599,6 +648,8 @@ namespace DBApplication
         {
             ResetMainButtonsState();
 
+            restoring = false;
+
             DeleteCommodityBlock.Visibility = Visibility.Hidden;
             EnterIntoMainBlock();
         }
@@ -611,17 +662,42 @@ namespace DBApplication
         /// <param name="e">Аргументы события.</param>
         private void DelCommodityBlock_DeleteChosenButton_Click(object sender, RoutedEventArgs e)
         {
-            propertiesToDelete = propertiesToDelete.Where(x => x.Del == true).ToList();
+            propertiesOfDeleteBlock = propertiesOfDeleteBlock.Where(x => x.Del == true).ToList();
 
-            if (propertiesToDelete.Count > 0)
+            if (propertiesOfDeleteBlock.Count > 0)
             {
-                foreach (PropertyToDelete property in propertiesToDelete)
+                foreach (PropertyToDelete property in propertiesOfDeleteBlock)
                 {
                     try
                     {
-                        DataBaseWork.DeleteCommodityFromTable(property.Property.ID);
+                        if (restoring)
+                        {
+                            UserProperty fill = DataBaseWork.RestoreCommodityFromTable(property.Property.ID, property.Property.Commodity, currentUser.Name);
 
-                        currentUserProperties.Remove(property.Property);
+                            if (fill.ID > currentUserProperties[currentUserProperties.Count - 1].ID)
+                            {
+                                currentUserProperties.Add(fill);
+                            }
+
+                            else
+                            {
+                                Int32 index = fill.ID - 1;
+
+                                while (index > currentUserProperties.Count || (index > 0 && currentUserProperties[index - 1].ID > fill.ID))
+                                {
+                                    index--;
+                                }
+
+                                currentUserProperties.Insert(index, fill);
+                            }
+                        }
+
+                        else
+                        {
+                            DataBaseWork.DeleteCommodityFromTable(property.Property.ID);
+
+                            currentUserProperties.Remove(property.Property);
+                        }
                     }
 
                     catch (ElementIdHasBeenTooBig)
@@ -637,12 +713,48 @@ namespace DBApplication
 
             else
             {
-                MessageBox.Show("Товары для удаления не выбраны.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(restoring ? "Товары для восстановления не выбраны." : "Товары для удаления не выбраны.", 
+                "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
         //—————————————————————————————————————————————————————————————————————————————————————————
         #endregion
+
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
+
+        #region Область восстановления товара.
+        //—————————————————————————————————————————————————————————————————————————————————————————
+
+        #region Вспомогательные методы.
+        //—————————————————————————————————————————————————————————————————————————————————————————
+
+        /// <summary>
+        /// Метод, который запускает процедуру восстановления товара.
+        /// </summary>
+        private void InitializeRestoring()
+        {
+            restoring = true;
+
+            propertiesOfDeleteBlock = new List<PropertyToDelete>(1);
+            List<UserProperty> tmpList = DataBaseWork.ReadDeletedCommodities(currentUser.Name);
+
+            foreach (UserProperty property in tmpList)
+            {
+                propertiesOfDeleteBlock.Add(new PropertyToDelete(property, false));
+            }
+
+            SelectCommodityToDeleteView.ItemsSource = propertiesOfDeleteBlock;
+        }
+
+        //—————————————————————————————————————————————————————————————————————————————————————————
+        #endregion
+
+        /* Пояснение:
+        * Весь остальной функционал реализован прямо в области "Удаление товара".
+        * Логика его работы базируется на состоянии поля "restoring", которое и изменяется посредством здешнего метода.
+        */
 
         //—————————————————————————————————————————————————————————————————————————————————————————
         #endregion

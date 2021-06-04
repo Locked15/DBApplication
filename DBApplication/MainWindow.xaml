@@ -184,8 +184,9 @@
             <RowDefinition Height = "40*"/>
             <RowDefinition Height = "40*"/>
             <RowDefinition Height = "40*"/>
-            <RowDefinition Height = "220*"/>
-            <RowDefinition Height = "30*"/>
+            <RowDefinition Height = "170*"/>
+            <RowDefinition Height = "35*"/>
+            <RowDefinition Height = "35*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -195,7 +196,8 @@
 
         <Button Name = "ExitAccountButton" Grid.Row = "0" Grid.Column = "0" Click = "ExitAccountButton_Click">
             <Grid Name = "ExitGrid">
-                <Image Name = "ExitAccountButton_Image" Source = "Resources/Exit - 01.png" Height = "40" Width = "40" Margin = "0, 0, 75, 0"/>
+                <Image Name = "ExitAccountButton_Image" Source = "Resources/Exit - 01.png" Height = "40" Width = "40" 
+                Margin = "0, 0, 75, 0"/>
 
                 <TextBlock Name = "ExitAccountButton_TextBlock" Text = "Выход." VerticalAlignment = "Center" HorizontalAlignment = "Right"
                 Margin = "20, 0, 0, 0" FontSize = "18"/>
@@ -205,7 +207,8 @@
         <Button Name = "AddCommodityButton" Grid.Row = "1" Grid.Column = "0" Click = "AddCommodityButton_Click" GotFocus = "MainButtonIsFocused" 
         Style = "{DynamicResource MainButtonsStyle}">
             <Grid Name = "AddGrid">
-                <Image Name = "AddCommodityButton_Image" Source = "Resources/Add-New.png" Height = "30" Width = "30" Margin = "0, 0, 85, 0"/>
+                <Image Name = "AddCommodityButton_Image" Source = "Resources/Add-New.png" Height = "30" Width = "30" 
+                Margin = "0, 0, 85, 0"/>
 
                 <TextBlock Name = "AddCommodityButton_TextBlock" Text = "Добавить." VerticalAlignment = "Center" HorizontalAlignment = "Right"
                 Margin = "20, 0, 0, 0" FontSize = "16"/>
@@ -215,7 +218,8 @@
         <Button Name = "ChangeCommodityButton" Grid.Row = "2" Grid.Column = "0" Click = "ChangeCommodityButton_Click" GotFocus = "MainButtonIsFocused"
         Style = "{DynamicResource MainButtonsStyle}">
             <Grid Name = "ChangeGrid">
-                <Image Name = "ChangeCommodityButton_Image" Source = "Resources/Change.png" Width = "30" Height = "30" Margin = "0, 0, 85, 0"/>
+                <Image Name = "ChangeCommodityButton_Image" Source = "Resources/Change.png" Width = "30" Height = "30" 
+                Margin = "0, 0, 85, 0"/>
 
                 <TextBlock Name = "ChangeCommodityButton_TextBlock" Text = "Изменить." VerticalAlignment = "Center" HorizontalAlignment = "Right"
                 Margin = "20, 0, 0, 0" FontSize = "16"/>
@@ -225,7 +229,8 @@
         <Button Name = "DeleteCommodityButton" Grid.Row = "3" Grid.Column = "0" Click = "DeleteCommodityButton_Click" GotFocus = "MainButtonIsFocused"
         Style = "{DynamicResource MainButtonsStyle}">
             <Grid Name = "DeleteGrid">
-                <Image Name = "DeleteCommodityButton_Image" Source = "Resources/Delete.png" Width = "30" Height = "30" Margin = "0, 0, 85, 0"/>
+                <Image Name = "DeleteCommodityButton_Image" Source = "Resources/Delete.png" Width = "30" Height = "30" 
+                Margin = "0, 0, 85, 0"/>
 
                 <TextBlock Name = "DeleteCommodityButton_TextBlock" Text = "Удалить." VerticalAlignment = "Center" HorizontalAlignment = "Right"
                 Margin = "20, 0, 0, 0" FontSize = "16"/>
@@ -234,23 +239,36 @@
 
         <Button Name = "UpdateSheetButton" Grid.Row = "4" Grid.Column = "0" Click = "UpdateSheetButton_Click">
             <Grid Name = "UpdateGrid">
-                <Image Name = "UpdateSheetButton_Image" Source = "Resources/Reload.png" Width = "30" Height = "30" Margin = "0, 0, 85, 0"/>
+                <Image Name = "UpdateSheetButton_Image" Source = "Resources/Reload.png" Width = "30" Height = "30" 
+                Margin = "0, 0, 85, 0"/>
 
                 <TextBlock Name = "UpdateSheetButton_TextBlock" Text = "Обновить." VerticalAlignment = "Center" HorizontalAlignment = "Right"
                 Margin = "20, 0, 0, 0" FontSize = "16"/>
             </Grid>
         </Button>
 
-        <Button Name = "InfoAboutProgramButton" Grid.Row = "6" Grid.Column = "0" Click = "InfoAboutProgramButton_Click">
+        <Button Name = "DeletedCommodititesButton" Grid.Row = "6" Grid.Column = "0" Click = "DeletedCommodititesButton_Click"
+        GotFocus = "MainButtonIsFocused">
+            <Grid>
+                <Image Name = "DeletedCommodititesButton_Image" Source = "Resources/Garbage-Open.png" Width = "25" Height = "25"
+                Margin = "0, 0, 90, 0"/>
+
+                <TextBlock Name = "DeletedCommodititesButton_TextBlock" Text = "Удаленное." VerticalAlignment = "Center" HorizontalAlignment = "Right"
+                Margin="20, 0, 0, 0" FontSize="16"/>
+            </Grid>
+        </Button>
+
+        <Button Name = "InfoAboutProgramButton" Grid.Row = "7" Grid.Column = "0" Click = "InfoAboutProgramButton_Click">
             <Grid Name = "InfoButtonGrid">
-                <Image Name = "InfoAboutProgramButton_Image" Source = "Resources/Help.png" Width = "25" Height = "25" Margin = "0, 0, 90, 0"/>
+                <Image Name = "InfoAboutProgramButton_Image" Source = "Resources/Help.png" Width = "25" Height = "25" 
+                Margin = "0, 0, 90, 0"/>
 
                 <TextBlock Name = "InfoAboutProgramButton_TextBlock" Text = "Сведения." VerticalAlignment = "Center" HorizontalAlignment = "Right"
                 Margin = "20, 0, 0, 0" FontSize = "18"/>
             </Grid>
         </Button>
 
-        <Grid Name = "MainDataBaseBlock" Grid.Row = "0" Grid.RowSpan = "7" Grid.Column = "2" Visibility = "Hidden">
+        <Grid Name = "MainDataBaseBlock" Grid.Row = "0" Grid.RowSpan = "8" Grid.Column = "1" Visibility = "Hidden">
             <ListView Name = "Sheet">
                 <ListView.View>
                     <GridView>
@@ -279,7 +297,7 @@
             </ListView>
         </Grid>
 
-        <Grid Name = "AddNewCommodityBlock" Grid.Row = "0" Grid.Column = "1" Grid.RowSpan = "7" Visibility = "Hidden">
+        <Grid Name = "AddNewCommodityBlock" Grid.Row = "0" Grid.Column = "1" Grid.RowSpan = "8" Visibility = "Hidden">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width = "30*"/>
                 <ColumnDefinition Width = "30*"/>
@@ -447,7 +465,7 @@
             </Grid>
         </Grid>
 
-        <Grid Name = "DeleteCommodityBlock" Grid.Row = "0" Grid.Column = "1" Grid.RowSpan = "7" Visibility = "Hidden"
+        <Grid Name = "DeleteCommodityBlock" Grid.Row = "0" Grid.Column = "1" Grid.RowSpan = "8" Visibility = "Hidden"
         Background = "White">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width = "10*"/>
@@ -456,7 +474,7 @@
                 <ColumnDefinition Width = "40*"/>
                 <ColumnDefinition Width = "10*"/>
             </Grid.ColumnDefinitions>
-            
+
             <Grid.RowDefinitions>
                 <RowDefinition Height = "350*"/>
                 <RowDefinition Height = "10"/>

@@ -197,6 +197,7 @@
     <Resource Include="Resources\Database-Connection.ico" />
     <Resource Include="Resources\Door-Closed.ico" />
     <Resource Include="Resources\User-Add.ico" />
+    <Resource Include="Resources\Garbage-Open.png" />
     <Content Include="БД\DataBase.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
