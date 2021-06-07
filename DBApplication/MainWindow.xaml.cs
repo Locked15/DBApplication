@@ -700,9 +700,18 @@ namespace DBApplication
                         }
                     }
 
+                    //Исключение, возникающее при слишком большом индексе удаляемого элемента:
                     catch (ElementIdHasBeenTooBig)
                     {
                         MessageBox.Show("В процессе выполнения была обнаружена ошибка.", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+
+                    //Исключение, возникающее при попытке восстановить товар и вставить его в пустую коллекцию товаров пользователя:
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        UserProperty fill = DataBaseWork.RestoreCommodityFromTable(property.Property.ID, property.Property.Commodity, currentUser.Name);
+
+                        currentUserProperties.Add(fill);
                     }
                 }
 

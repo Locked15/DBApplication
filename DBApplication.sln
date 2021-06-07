@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBApplication", "DBApplication\DBApplication.csproj", "{F4136E34-CAC3-4302-9504-303E02EA3515}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBApplication.Tests", "DBApplication.Tests\DBApplication.Tests.csproj", "{29F8D003-A442-44B3-90C1-01C7AE68104B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DBApplication.Tests", "DBApplication.Tests\DBApplication.Tests.csproj", "{29F8D003-A442-44B3-90C1-01C7AE68104B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
